@@ -1,0 +1,49 @@
+This is BibTeX, Version 0.99d (TeX Live 2015)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: am207-report.aux
+The style file: plain.bst
+Database file #1: project.bib
+Warning--empty journal in snydermastermind
+Warning--empty year in snydermastermind
+You've used 8 entries,
+            2118 wiz_defined-function locations,
+            541 strings with 5531 characters,
+and the built_in function-call counts, 3206 in all, are:
+= -- 331
+> -- 121
+< -- 5
++ -- 49
+- -- 40
+* -- 186
+:= -- 488
+add.period$ -- 28
+call.type$ -- 8
+change.case$ -- 44
+chr.to.int$ -- 0
+cite$ -- 10
+duplicate$ -- 152
+empty$ -- 268
+format.name$ -- 40
+if$ -- 722
+int.to.chr$ -- 0
+int.to.str$ -- 8
+missing$ -- 8
+newline$ -- 42
+num.names$ -- 16
+pop$ -- 67
+preamble$ -- 1
+purify$ -- 36
+quote$ -- 0
+skip$ -- 112
+stack$ -- 0
+substring$ -- 201
+swap$ -- 55
+text.length$ -- 5
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 32
+warning$ -- 2
+while$ -- 31
+width$ -- 9
+write$ -- 89
+(There were 2 warnings)

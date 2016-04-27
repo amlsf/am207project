@@ -1,0 +1,52 @@
+\begin{thebibliography}{1}
+
+\bibitem{bernier1996solving}
+Jos{\'e}~Luis Bernier, C~Ilia Herr{\'a}iz, JJ~Merelo, S~Olmeda, and Alberto
+  Prieto.
+\newblock Solving mastermind using gas and simulated annealing: a case of
+  dynamic constraint optimization.
+\newblock In {\em Parallel Problem Solving from Nature?PPSN IV}, pages
+  553--563. Springer, 1996.
+
+\bibitem{doerr2013playing}
+Benjamin Doerr, Reto Sp{\"o}hel, Henning Thomas, and Carola Winzen.
+\newblock Playing mastermind with many colors.
+\newblock In {\em Proceedings of the Twenty-Fourth Annual ACM-SIAM Symposium on
+  Discrete Algorithms}, pages 695--704. SIAM, 2013.
+
+\bibitem{knuth76}
+D.E. Knuth.
+\newblock The computer as a master mind.
+\newblock {\em Journal of Recreational Mathematics}, 1976.
+
+\bibitem{merelo2010finding}
+Juan~J Merelo-Guerv{\'o}s and Thomas~Philip Runarsson.
+\newblock Finding better solutions to the mastermind puzzle using evolutionary
+  algorithms.
+\newblock In {\em Applications of Evolutionary Computation}, pages 121--130.
+  Springer, 2010.
+
+\bibitem{merelo2013improving}
+Juan~Juli{\'a}n Merelo-Guerv{\'o}s, Pedro Castillo, Antonio~M Mora~Garc{\'\i}a,
+  and Anna~I Esparcia-Alc{\'a}zar.
+\newblock Improving evolutionary solutions to the game of mastermind using an
+  entropy-based scoring method.
+\newblock In {\em Proceedings of the 15th annual conference on Genetic and
+  evolutionary computation}, pages 829--836. ACM, 2013.
+
+\bibitem{runarsson2010adapting}
+Thomas~Philip Runarsson and Juan~J Merelo-Guerv{\'o}s.
+\newblock Adapting heuristic mastermind strategies to evolutionary algorithms.
+\newblock In {\em Nature Inspired Cooperative Strategies for Optimization
+  (NICSO 2010)}, pages 255--267. Springer, 2010.
+
+\bibitem{snydermastermind}
+Angela Snyder.
+\newblock Mastermind by importance sampling and metropolis-hastings.
+
+\bibitem{vomlel2004bayesian}
+Jir{\i} Vomlel.
+\newblock Bayesian networks in mastermind.
+\newblock In {\em Proceedings of the 7th Czech-Japan Seminar}, 2004.
+
+\end{thebibliography}
