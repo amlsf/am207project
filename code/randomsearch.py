@@ -1,4 +1,4 @@
-# knuth.py
+# randomsearch.py
 # v 1.0  27 April 2016 [KL]
 
 ######################
