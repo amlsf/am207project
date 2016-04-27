@@ -1,6 +1,15 @@
 # knuth.py
 # v 1.0  20 April 2016 [KL]
 
+######################
+#
+# Submission by Kendrick Lo (Harvard ID: 70984997) for
+# AM 207 - Stochastic Methods for Data Analysis, Inference and Optimization
+#
+# Course Project
+#
+######################
+
 # example driver for MasterMind class:
 # runs Knuth solver for MasterMind
 
@@ -86,7 +95,7 @@ def knuth(cl=4, nc=6, silent=False):
         # "5. Otherwise, remove from S any code that would not give the same
         #    response if it (the guess) were the code"
         for code in S.keys():
-            # Uses classes built-in check_guess function
+            # Uses class' built-in check_guess function
             temp = k.check_guess(guess=S[code], answer=knuth_guess)
             if temp != response:
                 del S[code]

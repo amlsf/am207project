@@ -1,6 +1,15 @@
 # MMboard.py
 # v 1.0  20 April 2016 [KL]
 
+######################
+#
+# Submission by Kendrick Lo (Harvard ID: 70984997) for
+# AM 207 - Stochastic Methods for Data Analysis, Inference and Optimization
+#
+# Course Project
+#
+######################
+
 # implements MasterMind game instances
 
 '''
