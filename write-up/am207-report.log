@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  27 APR 2016 14:17
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  27 APR 2016 14:24
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -405,7 +405,7 @@ LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <12> not available
 Here is how much of TeX's memory you used:
  4880 strings out of 493089
  71576 string characters out of 6134842
- 129315 words of memory out of 5000000
+ 128314 words of memory out of 5000000
  8239 multiletter control sequences out of 15000+600000
  37369 words of font info for 106 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -419,7 +419,7 @@ lic/mathpazo/fplmbb.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/
 mathpazo/fplmr.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/palatino
 /uplb8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/palatino/uplr8a
 .pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on am207-report.pdf (5 pages, 96903 bytes).
+Output written on am207-report.pdf (5 pages, 96888 bytes).
 PDF statistics:
  53 PDF objects out of 1000 (max. 8388607)
  37 compressed objects within 1 object stream
