@@ -313,11 +313,15 @@ class SAsim():
 
         return self._best_guess, self._best_resp, it
 
-    def runSA(self, cl=4, nc=6, silent=False, time=None):
+    def runSA(self, cl=4, nc=6, code=None, silent=False):
         '''Driver: Set up board and run SA algorithm. '''
 
+        # if code is provided, it must be in the form of a list or 1-D numpy array
         self._sa = mm.MMboard(codelength=cl, numcolors=nc, suppress_output=silent)
-        self._sa.set_code()
+        if code is None:
+            self._sa.set_code()
+        else:
+            self._sa.set_code(code)
 
         # initial guess
         sa_guess = list(np.random.randint(0, nc, cl))
@@ -337,9 +341,12 @@ class SAsim():
         init_temp = 6
         thermostat = 0.98
         k = 0.2  # try slightly bigger fractions for larger spaces
-        itol = 100000  # this is a proxy for allowable execution time
+        itol = 10000  # this is a proxy for allowable execution time
 
-        return self.sa(sa_guess, response, init_temp, thermostat, 0, itol, 0, k)
+        # output is in the form of best guess, best response, number of guesses
+        output = self.sa(sa_guess, response, init_temp, thermostat, 0, itol, 0, k)
+
+        return output[2]  # number of guesses
 
 if __name__ == "__main__":
     s = SAsim()

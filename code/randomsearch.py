@@ -44,15 +44,21 @@ import MMboard as mm
 import itertools
 import numpy as np
 
-def random_search(cl=4, nc=6, silent=False):
+def random_search(cl=4, nc=6, code=None, silent=False):
     # implements Random-Search with constraints
     # expanded for arbitrary code lengths and alphabet
     # https://en.wikipedia.org/wiki/Mastermind_(board_game)
 
     # NOTE: we are using a 0-index
+    # if code is provided, it must be in the form of a list or 1-D numpy array
+
+    # Returns: total number of guesses
 
     rs = mm.MMboard(codelength=cl, numcolors=nc, suppress_output=silent)
-    rs.set_code()
+    if code is None:
+        rs.set_code()
+    else:
+        rs.set_code(code)
 
     n_guesses = 0
 

@@ -44,16 +44,22 @@ import itertools
 from collections import Counter
 
 
-def knuth(cl=4, nc=6, silent=False):
+def knuth(cl=4, nc=6, code=None, silent=False):
     # implements Knuth's Five-Guess Algorithm
     # expanded for arbitrary code lengths and alphabet
     # https://en.wikipedia.org/wiki/Mastermind_(board_game)
     # Numbered comments below are from the Wikipedia article.
 
     # NOTE: we are using a 0-index
+    # if code is provided, it must be in the form of a list or 1-D numpy array
+
+    # Returns: total number of guesses
 
     k = mm.MMboard(codelength=cl, numcolors=nc, suppress_output=silent)
-    k.set_code()
+    if code is None:
+        k.set_code()  # set random
+    else:
+        k.set_code(code)
 
     n_guesses = 0
 
