@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  28 APR 2016 14:19
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  28 APR 2016 19:21
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -400,26 +400,39 @@ File: ufplmbb.fd 2003/10/30 Fontinst v1.914 font definitions for U/fplmbb.
 {/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <12> not available
 (Font)              Font shape `OT1/ppl/b/n' tried instead on input line 40.
- [2] [3] [4]
-(./am207-report.bbl) [5] (./am207-report.aux) ) 
+
+Underfull \hbox (badness 5533) in paragraph at lines 84--84
+[][]\OT1/ppl/m/n/9 For ex-am-ple, the clas-sic ver-sion of the game with codes 
+of length $4$ has 14 pos-si-ble re-sponses:
+ []
+
+[2] [3] [4]
+
+LaTeX Warning: Citation `snydermastermind' undefined on input line 127.
+
+(./am207-report.bbl) [5] (./am207-report.aux)
+
+LaTeX Warning: There were undefined references.
+
+ ) 
 Here is how much of TeX's memory you used:
- 4880 strings out of 493089
- 71576 string characters out of 6134842
- 128314 words of memory out of 5000000
- 8239 multiletter control sequences out of 15000+600000
- 37369 words of font info for 106 fonts, out of 8000000 for 9000
+ 4885 strings out of 493089
+ 71628 string characters out of 6134842
+ 130311 words of memory out of 5000000
+ 8242 multiletter control sequences out of 15000+600000
+ 38261 words of font info for 111 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  43i,9n,40p,973b,202s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2015/texmf-d
-ist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2015/texmf-dist/fonts/type1
-/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/
-public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/pu
-blic/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/pub
-lic/mathpazo/fplmbb.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/
-mathpazo/fplmr.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/palatino
-/uplb8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/palatino/uplr8a
-.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on am207-report.pdf (5 pages, 96410 bytes).
+{/usr/local/texlive/2015/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
+exlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/te
+xlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texl
+ive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texli
+ve/2015/texmf-dist/fonts/type1/public/mathpazo/fplmbb.pfb></usr/local/texlive/2
+015/texmf-dist/fonts/type1/public/mathpazo/fplmr.pfb></usr/local/texlive/2015/t
+exmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/local/texlive/2015/texmf-di
+st/fonts/type1/urw/palatino/uplr8a.pfb></usr/local/texlive/2015/texmf-dist/font
+s/type1/urw/palatino/uplri8a.pfb>
+Output written on am207-report.pdf (5 pages, 99360 bytes).
 PDF statistics:
  53 PDF objects out of 1000 (max. 8388607)
  37 compressed objects within 1 object stream

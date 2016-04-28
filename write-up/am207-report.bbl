@@ -40,10 +40,6 @@ Thomas~Philip Runarsson and Juan~J Merelo-Guerv{\'o}s.
 \newblock In {\em Nature Inspired Cooperative Strategies for Optimization
   (NICSO 2010)}, pages 255--267. Springer, 2010.
 
-\bibitem{snydermastermind}
-Angela Snyder.
-\newblock Mastermind by importance sampling and metropolis-hastings.
-
 \bibitem{vomlel2004bayesian}
 Jir{\i} Vomlel.
 \newblock Bayesian networks in mastermind.
