@@ -15,7 +15,7 @@
 
 \section{Introduction}
 
-The game \textbf{Mastermind} was invented in 1970 by Mordecai Meirowitz, and is similar to an earlier game called Bulls and Cows. There are many variations of the game\footnote{https://en.wikipedia.org/wiki/Mastermind\_(board\_game)\#Variations}, but they all follow a broadly consistent format. The game involves two players: a code-maker and a code-breaker. The code-maker selects a sequence of length L (usually 4), where each element in the sequence is chosen with replacement from one of C colors (usually 6). At each turn, the code-breaker guesses a sequence and receives feedback in the form of black pegs and white pegs, where the black pegs denote the number of correct guesses in the right position, and the white pegs denote the number of correct guesses in the wrong position. Based on this information, the code-breaker refines her guesses and attempts to crack the code within the maximum number of guesses (usually \textcolor{red}{XX}).
+The game \textbf{Mastermind} was invented in 1970 by Mordecai Meirowitz, and is similar to an earlier game called Bulls and Cows. There are many variations of the game\footnote{https://en.wikipedia.org/wiki/Mastermind\_(board\_game)\#Variations}, but they all follow a broadly consistent format. The game involves two players: a code-maker and a code-breaker. The code-maker selects a sequence of length L (usually 4), where each element in the sequence is chosen with replacement from one of C colors (usually 6). At each turn, the code-breaker guesses a sequence and receives feedback in the form of black pegs and white pegs, where the black pegs denote the number of correct guesses in the right position, and the white pegs denote the number of correct guesses in the wrong position. Based on this information, the code-breaker refines her guesses and attempts to crack the code within the maximum number of guesses (usually 10).
 
 For our project, we set out to implement different strategies and algorithms for optimizing the code-breaker's guesses. We then tested their performance based on \textcolor{red}{TBC - performance metrics}.
 
@@ -75,8 +75,7 @@ P(H_1=h_1, ..., H_L=h_l) = \frac{1}{C^L} ,\quad \text{for all combinations of }(
 
 \noindent where $\ s(e_1) \ \cap \ ... \ \cap \ s(e_n)$ denotes the intersection of the sets of possible hidden codes, given the evidence at each step, and the entire denominator denotes the cardinality of this intersection.
 
-We can use this framework to define the posterior updates at each round of the game, and then choose the next guess randomly from the updated distribution. We note that some of the Mastermind literature uses Shannon entropy to measure the uncertainty associated with codes after each posterior update. We chose not to use this measure, as it will be the same for all remaining valid codes at each update step and therefore does not provide any additional information or ranking.
-
+We can use this framework to define the posterior updates at each round of the game, and then choose the next guess by sampling from the posterior distribution.
 \subsection{Simulated Annealing}
 
 \noindent \textcolor{red}{TODO}
