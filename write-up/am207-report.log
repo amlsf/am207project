@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  29 APR 2016 14:56
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  29 APR 2016 15:58
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -420,53 +420,59 @@ Underfull \hbox (badness 5533) in paragraph at lines 102--102
 of length $4$ has 14 pos-si-ble re-sponses:
  []
 
-[3] [4] <img/entropy.png, id=26, 498.86375pt x 367.3725pt>
+[3] [4] <img/num_guesses.png, id=26, 514.92375pt x 366.36874pt>
+File: img/num_guesses.png Graphic file (type png)
+
+<use img/num_guesses.png>
+Package pdftex.def Info: img/num_guesses.png used on input line 145.
+(pdftex.def)             Requested size: 281.85587pt x 200.54189pt.
+ <img/entropy.png, id=27, 498.86375pt x 367.3725pt>
 File: img/entropy.png Graphic file (type png)
 
 <use img/entropy.png>
-Package pdftex.def Info: img/entropy.png used on input line 139.
+Package pdftex.def Info: img/entropy.png used on input line 152.
 (pdftex.def)             Requested size: 281.85587pt x 207.57144pt.
- [5 <./img/entropy.png>]
+ [5 <./img/num_guesses.png> <./img/entropy.png>]
 LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <10.95> not available
-(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 151.
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 164.
 
-Overfull \hbox (6.95552pt too wide) in paragraph at lines 149--163
+Overfull \hbox (6.95552pt too wide) in paragraph at lines 162--176
  [] 
  []
 
 
-Overfull \hbox (6.95552pt too wide) in paragraph at lines 170--184
+Overfull \hbox (6.95552pt too wide) in paragraph at lines 183--197
  [] 
  []
 
 
-Overfull \hbox (6.95552pt too wide) in paragraph at lines 191--205
+Overfull \hbox (6.95552pt too wide) in paragraph at lines 204--218
  [] 
  []
 
 [6]
-Overfull \hbox (6.95552pt too wide) in paragraph at lines 214--228
+Overfull \hbox (6.95552pt too wide) in paragraph at lines 227--241
  [] 
  []
 
 
-Overfull \hbox (6.95552pt too wide) in paragraph at lines 235--249
+Overfull \hbox (6.95552pt too wide) in paragraph at lines 248--262
  [] 
  []
 
 
-Overfull \hbox (6.95552pt too wide) in paragraph at lines 256--270
+Overfull \hbox (6.95552pt too wide) in paragraph at lines 269--283
  [] 
  []
 
 [7]
-Overfull \hbox (6.95552pt too wide) in paragraph at lines 279--293
+Overfull \hbox (6.95552pt too wide) in paragraph at lines 292--306
  [] 
  []
 
 [8]
 
-LaTeX Warning: Citation `snydermastermind' undefined on input line 305.
+LaTeX Warning: Citation `snydermastermind' undefined on input line 318.
 
 (./am207-report.bbl) [9] (./am207-report.aux)
 
@@ -474,13 +480,13 @@ LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 4932 strings out of 493089
- 72439 string characters out of 6134842
- 132601 words of memory out of 5000000
- 8279 multiletter control sequences out of 15000+600000
+ 4938 strings out of 493089
+ 72566 string characters out of 6134842
+ 132609 words of memory out of 5000000
+ 8284 multiletter control sequences out of 15000+600000
  40001 words of font info for 114 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 43i,10n,40p,964b,329s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 43i,10n,40p,964b,331s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2015/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/te
 xlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texl
@@ -491,10 +497,10 @@ exmf-dist/fonts/type1/public/mathpazo/fplmri.pfb></usr/local/texlive/2015/texmf
 -dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/local/texlive/2015/texmf-dist/f
 onts/type1/urw/palatino/uplr8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/ty
 pe1/urw/palatino/uplri8a.pfb>
-Output written on am207-report.pdf (9 pages, 130649 bytes).
+Output written on am207-report.pdf (9 pages, 156821 bytes).
 PDF statistics:
- 76 PDF objects out of 1000 (max. 8388607)
+ 78 PDF objects out of 1000 (max. 8388607)
  51 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 16 words of extra memory for PDF output out of 10000 (max. 10000000)
 

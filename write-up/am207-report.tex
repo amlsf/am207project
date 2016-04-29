@@ -57,7 +57,7 @@ It is helpful at this stage to introduce some mathematical notation to describe 
 
 The most commonly referenced optimization technique in the Mastermind literature is Knuth's five-guess algorithm \cite{knuth76} \textendash \ sometimes also referred to as the ``worst-case strategy" \textendash \ which can always solve the classic game configuration in five moves or less. This strategy always begins with the same initial guess of 1122 (or 0011, when zero-indexed); this choice is motivated by examples of other initial guesses that do not always lead to a solution in five moves. Our implementation uses this deterministic initial guess for the classic game configuration, but uses a random initial guess for all other configurations as analogous ``best" starting points are not defined in the literature.
 
-After the initial guess, the algorithm determines the minimum number of codes that each guess would eliminate from the list of possibilities, and chooses one of the guesses that maximizes this number\footnote{Wikipedia refers to this as the minimax technique. We note that this one-off maximization differs from the recursive minimax \textit{algorithm} that is also used in game theory.}. At each stage of the game, the set of possible codes is updated to only include codes that would have generated the same responses at each of the previous steps. This ensures that the state space shrinks with each subsequent guess.
+After the initial guess, the algorithm determines the minimum number of codes that each guess would eliminate from the list of possibilities, and chooses one of the guesses that maximizes this number\footnote{Wikipedia refers to this as the minimax \textit{technique}. We note that this one-off maximization differs from the recursive minimax \textit{algorithm} that is also used in game theory.}. At each stage of the game, the set of possible codes is updated to only include codes that would have generated the same responses at each of the previous steps. This ensures that the state space shrinks with each subsequent guess.
 
 \subsection{Random Search with Constraints / Random Sampling From Posterior}
 
@@ -93,7 +93,7 @@ P(H_1=h_1, ..., H_L=h_l) = \frac{1}{C^L} ,\quad \text{for all combinations of }(
 
 \noindent where $\ s(e_1) \ \cap \ ... \ \cap \ s(e_n)$ denotes the intersection of the sets of possible hidden codes, given the evidence at each step, and the entire denominator denotes the cardinality of this intersection.
 
-We can use this framework to define the posterior updates at each round of the game, and then choose the next guess by sampling from the posterior distribution.
+We can use this framework to define the posterior updates at each round of the game, and then choose the next guess by sampling from the posterior distribution. Figure \ref{fig:num_guesses} shows how the number of possible guesses shrinks as the game progresses.
 
 \subsection{Maximizing Shannon Entropy}
 
@@ -113,7 +113,11 @@ In order to improve her performance, the code-breaker will want to pick the gues
 
 \subsection{Simulated Annealing}
 
-\noindent \textcolor{red}{TODO}
+Knuth's algorithm and maximizing shannon entropy are both examples of global optimization techniques. These approaches work well when optimizing across relatively small state spaces, but they are not guaranteed to scale well as the problem size increases. For example, maximizing shannon entropy has complexity $O(|s(e_i^2)|)$ at the $i$th round of the game, i.e. the runtime scales quadratically with the number of possible codes.
+
+Simulated annealing provides an alternative optimization approach that does not require an exhaustive search of the state space\footnote{For the sake of brevity, the simulated annealing algorithm is not described here.}. The effectiveness of this technique will depend upon the objective function that is used to evaluate potential guesses, and the method that is used to propose potential new guesses. As mentioned above, we can use simulated annealing as a faster alternative to calculating the shannon entropy of all guesses. In this case, new guesses will be proposed by randomly picking from the set of remaining possible guesses, and will be evaluated by calculating their entropy.
+
+An alternative approach is described by Bernier et al. \cite{bernier1996solving}. Under this framework, new guesses are proposed by randomly picking from the set of all guesses that have not already been used. Not updating the set of possible guesses at each turn reduces the runtime complexity of the algorithm. The proposed guess's objective function is defined as the difference between the black and white pegs obtained from previous guesses and the number of black and white pegs that would have been obtained if the newly proposed guess was the right code. Once again, this approach has the advantage of being computationally inexpensive.
 
 \subsection{Genetic Algorithms}
 
@@ -122,6 +126,8 @@ In order to improve her performance, the code-breaker will want to pick the gues
 \section{Experiments}
 
 \noindent \textcolor{red}{TODO}
+
+%variations on entropy - exclude first guess
 
 \section{Conclusion}
 
@@ -133,6 +139,13 @@ In order to improve her performance, the code-breaker will want to pick the gues
 \appendix
 
 \section{Figures}
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.6\textwidth]{img/num_guesses}
+\caption{Evolution in number of possible guesses}
+\label{fig:num_guesses}
+\end{figure}
 
 \begin{figure}[!htbp]
 \centering
