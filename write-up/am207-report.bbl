@@ -19,6 +19,11 @@ D.E. Knuth.
 \newblock The computer as a master mind.
 \newblock {\em Journal of Recreational Mathematics}, 1976.
 
+\bibitem{kooi2005yet}
+Barteld~P Kooi.
+\newblock Yet another mastermind strategy.
+\newblock {\em ICGA Journal}, 28(1):13--20, 2005.
+
 \bibitem{merelo2010finding}
 Juan~J Merelo-Guerv{\'o}s and Thomas~Philip Runarsson.
 \newblock Finding better solutions to the mastermind puzzle using evolutionary
@@ -33,6 +38,12 @@ Juan~Juli{\'a}n Merelo-Guerv{\'o}s, Pedro Castillo, Antonio~M Mora~Garc{\'\i}a,
   entropy-based scoring method.
 \newblock In {\em Proceedings of the 15th annual conference on Genetic and
   evolutionary computation}, pages 829--836. ACM, 2013.
+
+\bibitem{neuwirth1982some}
+E~Neuwirth.
+\newblock Some strategies for mastermind.
+\newblock {\em Zeitschrift f{\"u}r Operations Research}, 26(1):B257--B278,
+  1982.
 
 \bibitem{runarsson2010adapting}
 Thomas~Philip Runarsson and Juan~J Merelo-Guerv{\'o}s.

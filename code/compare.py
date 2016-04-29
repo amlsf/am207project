@@ -107,33 +107,32 @@ for c in alphabet_sizes:
             print "avg number of guesses: %.1f (std: %.3f), avg run time: %.3f (std: %.3f)" % (meancnt, cnterror, meanrun, runerror)
         #################
 
-        # ################
-        # print "\n*** MAXIMIZING ENTROPY AT ALL STEPS ***"
+        ################
+        print "\n*** MAXIMIZING ENTROPY (ALL STEPS) ***"
         
-        # cnt = np.zeros(nsims)
-        # runtime = np.zeros(nsims)
+        cnt = np.zeros(nsims)
+        runtime = np.zeros(nsims)
         
-        # for i in range(nsims):
-        #     start = time.time()
-        #     cnt[i] = e.entropy_all(cl=l, nc=c, code=secret, silent=silent_mode)
-        #     runtime[i] = time.time() - start
+        for i in range(nsims):
+            start = time.time()
+            cnt[i] = e.entropy_all(cl=l, nc=c, code=secret, silent=silent_mode)
+            runtime[i] = time.time() - start
         
-        # meancnt = np.mean(cnt)
-        # cnterror = np.std(cnt)
-        # meanrun = np.mean(runtime)
-        # runerror = np.std(runtime)
+        meancnt = np.mean(cnt)
+        cnterror = np.std(cnt)
+        meanrun = np.mean(runtime)
+        runerror = np.std(runtime)
         
-        # if "Entropy-all" not in results:
-        #     results["Entropy-all"] = [((c, l), meancnt, meanrun, cnterror, runerror)]
-        # else:
-        #     results["Entropy-all"] += [((c, l), meancnt, meanrun, cnterror, runerror)]
-        # if summary_stats:
-        #     print "avg number of guesses: %.1f (std: %.3f), avg run time: %.3f (std: %.3f)" % (meancnt, cnterror, meanrun, runerror)
-        # ################
+        if "Entropy-all" not in results:
+            results["Entropy-all"] = [((c, l), meancnt, meanrun, cnterror, runerror)]
+        else:
+            results["Entropy-all"] += [((c, l), meancnt, meanrun, cnterror, runerror)]
+        if summary_stats:
+            print "avg number of guesses: %.1f (std: %.3f), avg run time: %.3f (std: %.3f)" % (meancnt, cnterror, meanrun, runerror)
+        ################
 
         ################
-        # print "\n*** MAXIMIZING ENTROPY (EXCEPT FIRST STEP) ***" # COMPARABLE PERFORMANCE & MUCH FASTER!
-        print "\n*** MAXIMIZING ENTROPY ***"
+        print "\n*** MAXIMIZING ENTROPY (EXCEPT FIRST STEP) ***"
         
         cnt = np.zeros(nsims)
         runtime = np.zeros(nsims)
@@ -157,7 +156,7 @@ for c in alphabet_sizes:
         ################
 
         #################
-        print "\n*** SIMULATED ANNEALING ***"
+        print "\n*** SIMULATED ANNEALING (BERNIER OBJECTIVE FUNCTION) ***"
 
         cnt = np.zeros(nsims)
         runtime = np.zeros(nsims)
@@ -181,7 +180,7 @@ for c in alphabet_sizes:
         #################
 
         ################
-        print "\n*** SIMULATED ANNEALING - ENTROPY OBJECTIVE FUNCTION ***"
+        print "\n*** SIMULATED ANNEALING (ENTROPY OBJECTIVE FUNCTION) ***"
         
         cnt = np.zeros(nsims)
         runtime = np.zeros(nsims)
@@ -205,7 +204,7 @@ for c in alphabet_sizes:
         ################
 
         #################
-        # print "\n*** GENETIC ALGORITHMS ***"
+        # print "\n*** GENETIC ALGORITHMS (XX OBJECTIVE FUNCTION) ***"
         #
         # cnt = np.zeros(nsims)
         # runtime = np.zeros(nsims)

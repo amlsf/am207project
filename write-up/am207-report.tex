@@ -2,28 +2,42 @@
 \usepackage{common}
 \usepackage[usenames, dvipsnames]{color}
 \usepackage{setspace}
+\usepackage{booktabs}
+\usepackage{multirow}
 
 \title{AM207 Final Project: Mastermind}
 \author{Gioia Domined\`o \and Amy Lee \and Kendrick Lo \and Reiner Maat}
-
-\pagenumbering{arabic}
 
 \begin{document}
 \maketitle{}
 
 \begin{abstract}
-%\textcolor{red}{TODO}
+\textcolor{red}{Insert abstract text.}
 \end{abstract}
+
+\pagestyle{plain}
+\pagenumbering{arabic}
 
 \section{Introduction}
 
-The game \textbf{Mastermind} was invented in 1970 by Mordecai Meirowitz, and is similar to an earlier game called Bulls and Cows. There are many variations of the game\footnote{https://en.wikipedia.org/wiki/Mastermind\_(board\_game)\#Variations}, but they all follow a broadly consistent format. The game involves two players: a code-maker and a code-breaker. The code-maker selects a sequence of length L (usually 4), where each element in the sequence is chosen with replacement from one of C colors (usually 6). At each turn, the code-breaker guesses a sequence and receives feedback in the form of black pegs and white pegs, where the black pegs denote the number of correct guesses in the right position, and the white pegs denote the number of correct guesses in the wrong position. Based on this information, the code-breaker refines her guesses and attempts to crack the code within the maximum number of guesses (usually 10).
+The game Mastermind was invented in 1970 by Mordecai Meirowitz, and is similar to an earlier game called Bulls and Cows. There are many variations of the game\footnote{https://en.wikipedia.org/wiki/Mastermind\_(board\_game)\#Variations}, but they all follow a broadly consistent format. The game involves two players: a code-maker and a code-breaker. The code-maker selects a sequence of length L (usually 4), where each element in the sequence is chosen with replacement from one of C colors (usually 6). At each turn, the code-breaker guesses a sequence and receives feedback in the form of black pegs and white pegs, where the black pegs denote the number of correct guesses in the right position, and the white pegs denote the number of correct guesses in the wrong position. Based on this information, the code-breaker refines her guesses and attempts to crack the code within the maximum number of guesses (usually 10).
 
-For our project, we set out to implement different strategies and algorithms for optimizing the code-breaker's guesses. We then tested their performance based on \textcolor{red}{TBC - performance metrics}.
+For our project, we set out to implement various strategies and algorithms for iteratively optimizing the code-breaker's guess at each turn. We compared the performance of these strategies based on the mean and standard deviation of the required number of guesses to win and the runtime across 20 random game initializations. In order to assess the extent to which the different solutions scale efficiently, we tested seven game setups of varying complexity.
 
-\section{Methods}
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.7\textwidth]{img/game_setup}
+\caption{Mastermind Framework}
+\label{fig:game_setup}
+\end{figure}
 
-It is helpful at this stage to introduce some mathematical notation to describe the game, which we will use consistently when describing the various methods that we tested. For simplicity, we use one-indexing in the formulas below, despite the Python code being zero-indexed.  We define:
+\newpage
+
+\section{Optimization Methods}
+
+It is helpful at this stage to introduce some mathematical notation to describe the game, which we will use consistently when describing the various methods that we tested. For simplicity, we use one-indexing in the formulas below; however, we note that the Python code for the game interface that we built is zero-indexed. \medskip
+
+\noindent We define:
 \begin{itemize}
 \item set of possible colors: $C = \{1, ..., C\}$
 \item set of positions in the code: $L = \{1, ..., L\}$
@@ -39,11 +53,13 @@ It is helpful at this stage to introduce some mathematical notation to describe 
 \item correct guesses in the wrong position: $W = \sum_{i=1}^{C} \min(\sum_{j=1}^{L}\mathbb{1}_{H_j=i, G_i}, \sum_{j=1}^{L}\mathbb{1}_{T_j=i, G_i}) - B$
 \end{itemize}
 
-\subsection{Baseline: Knuth's Five-Guess Algorithm}
+\subsection{Knuth's Five-Guess Algorithm}
 
-\noindent \textcolor{red}{TODO}
+The most commonly referenced optimization technique in the Mastermind literature is Knuth's five-guess algorithm \cite{knuth76} \textendash \ sometimes also referred to as the ``worst-case strategy" \textendash \ which can always solve the classic game configuration in five moves or less. This strategy always begins with the same initial guess of 1122 (or 0011, when zero-indexed); this choice is motivated by examples of other initial guesses that do not always lead to a solution in five moves. Our implementation uses this deterministic initial guess for the classic game configuration, but uses a random initial guess for all other configurations as analogous ``best" starting points are not defined in the literature.
 
-\subsection{Random Search with Constaints / Random Sampling From Posterior}
+After the initial guess, the algorithm determines the minimum number of codes that each guess would eliminate from the list of possibilities, and chooses one of the guesses that maximizes this number\footnote{Wikipedia refers to this as the minimax technique. We note that this one-off maximization differs from the recursive minimax \textit{algorithm} that is also used in game theory.}. At each stage of the game, the set of possible codes is updated to only include codes that would have generated the same responses at each of the previous steps. This ensures that the state space shrinks with each subsequent guess.
+
+\subsection{Random Search with Constraints / Random Sampling From Posterior}
 
 This method is described in the Mastermind literature both as a constrained random search algorithm \cite{bernier1996solving} and in terms of posterior distribution updates \cite{vomlel2004bayesian}. We follow the latter approach below.
 
@@ -93,7 +109,7 @@ H(\text{guess} | \text{possible codes}) = \sum_{i=1}^R P(r_i) I(r_i) = - \sum_{i
 
 Practically, we calculate the probability of each response category for a given guess by counting (and normalizing) the total number of possible responses in each category, given the hidden codes that are still possible at that particular stage in the game. The value will depend on the shape of the probability distribution across the response categories, with the minimum entropy of $0$ only achievable when there is certainty of a particular outcome (i.e. $log_2(1)=0$).
 
-In order to improve her performance, the code-breaker will want to pick the guess that results in the highest entropy \textendash \ or, if there are ties, one of the best guesses \textendash \ in order to be able to discard more possible codes at the next step. This can be achieved through an exhaustive calculation of the entropy of all possible guesses at each stage or, for larger state spaces, through a local search technique such as simulated annealing or genetic algorithms. 
+In order to improve her performance, the code-breaker will want to pick the guess that results in the highest entropy \textendash \ or, if there are ties, one of the best guesses \textendash \ in order to be able to discard more possible codes at the next step. This can be achieved through an exhaustive calculation of the entropy of all possible guesses at each stage or, for larger state spaces, through a local search technique such as simulated annealing or genetic algorithms.  Figure \ref{fig:entropy} illustrates how the distribution of entropy for the remaining possible guesses can change as the game progresses; this technique is particularly effective where there is a clear maximum value (e.g. at the third guess).
 
 \subsection{Simulated Annealing}
 
@@ -128,14 +144,167 @@ In order to improve her performance, the code-breaker will want to pick the gues
 \newpage
 \section{Results}
 
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{l c c c c}
+\toprule
+\multirow{2}{*}{\bfseries Optimization Method} 		& \multicolumn{2}{c}{\bfseries Number of Guesses} 		& \multicolumn{2}{c}{\bfseries Runtime (Seconds)}	\\
+\cmidrule(lr){2-3}  \cmidrule(lr){4-5}				& $\mu$ & $\sigma$								& $\mu$ & $\sigma$							\\
+\cmidrule(lr){1-5}
+Knuth's Algorithm							& 4.0 & 0.000									& 0.021 & 0.002							\\
+Random Search/Random Sampling				& 3.7 & 0.557									& 0.002 & 0.000							\\
+Maximizing Entropy (All Steps)					& 3.8 & 0.510									& 0.193 & 0.010							\\
+Maximizing Entropy (Except First Step)			& 3.7 & 0.640									& 0.007 & 0.004							\\
+Simulated Annealing (Bernier Objective Function)	& 7.5 & 2.037									& 0.017 & 0.026							\\
+Simulated Annealing (Entropy Objective Function)	& 3.5 & 0.805									& 0.003 & 0.001							\\
+Genetic Algorithms (XX Objective Function)		& &											& &										\\
+\bottomrule
+\end{tabular}
+\end{center}
+\caption{4 Positions; 4 Possible Digits}
+\label{fig:compare_4_4}
+\end{table}
+
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{l c c c c}
+\toprule
+\multirow{2}{*}{\bfseries Optimization Method} 		& \multicolumn{2}{c}{\bfseries Number of Guesses} 		& \multicolumn{2}{c}{\bfseries Runtime (Seconds)}	\\
+\cmidrule(lr){2-3}  \cmidrule(lr){4-5}				& $\mu$ & $\sigma$								& $\mu$ & $\sigma$							\\
+\cmidrule(lr){1-5}
+Knuth's Algorithm							& 4.0 & 0.000									& 0.264 & 0.006							\\
+Random Search/Random Sampling				& 4.5 & 0.742									& 0.006 & 0.001							\\
+Maximizing Entropy (All Steps)					& 4.0 & 0.497									& 1.147 & 0.035							\\
+Maximizing Entropy (Except First Step)			& 4.0 & 0.894									& 0.042 &	0.017							\\
+Simulated Annealing (Bernier Objective Function)	& 8.0 & 1.359									& 0.042 & 0.129							\\
+Simulated Annealing (Entropy Objective Function)	& 4.7 & 0.781									& 0.007 & 0.001							\\
+Genetic Algorithms (XX Objective Function)		& &											& &										\\
+\bottomrule
+\end{tabular}
+\end{center}
+\caption{4 Positions; 5 Possible Digits}
+\label{fig:compare_4_5}
+\end{table}
+
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{l c c c c}
+\toprule
+\multirow{2}{*}{\bfseries Optimization Method} 		& \multicolumn{2}{c}{\bfseries Number of Guesses} 		& \multicolumn{2}{c}{\bfseries Runtime (Seconds)}	\\
+\cmidrule(lr){2-3}  \cmidrule(lr){4-5}				& $\mu$ & $\sigma$								& $\mu$ & $\sigma$							\\
+\cmidrule(lr){1-5}
+Knuth's Algorithm							& 4.0 & 0.000									& 0.606 & 0.017							\\
+Random Search/Random Sampling				& 4.8 & 0.994									& 0.013 & 0.003							\\
+Maximizing Entropy (All Steps)					& 4.8 & 0.600									& 5.225 & 0.207							\\
+Maximizing Entropy (Except First Step)			& 4.4 & 0.663									& 0.145 & 0.099							\\
+Simulated Annealing (Bernier Objective Function)	& 8.0 & 1.844									& 0.268 & 0.421							\\
+Simulated Annealing (Entropy Objective Function)	& 5.0 & 0.949									& 0.013 & 0.001							\\
+Genetic Algorithms (XX Objective Function)		& &											& &										\\
+\bottomrule
+\end{tabular}
+\end{center}
+\caption{4 Positions; 6 Possible Digits}
+\label{fig:compare_4_6}
+\end{table}
+
 \newpage
 
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{l c c c c}
+\toprule
+\multirow{2}{*}{\bfseries Optimization Method} 		& \multicolumn{2}{c}{\bfseries Number of Guesses} 		& \multicolumn{2}{c}{\bfseries Runtime (Seconds)}	\\
+\cmidrule(lr){2-3}  \cmidrule(lr){4-5}				& $\mu$ & $\sigma$								& $\mu$ & $\sigma$							\\
+\cmidrule(lr){1-5}
+Knuth's Algorithm							& 4.0 & 0.000									& 0.528 & 0.014							\\
+Random Search/Random Sampling				& 5.0 & 1.023									& 0.023 & 0.002							\\
+Maximizing Entropy (All Steps)					& 4.8 & 0.812									& 18.600 & 0.883							\\
+Maximizing Entropy (Except First Step)			& 4.8 & 0.766									& 0.669 & 0.407							\\
+Simulated Annealing (Bernier Objective Function)	& 9.2 & 1.077									& 0.069 & 0.224							\\
+Simulated Annealing (Entropy Objective Function)	& 5.3 & 0.781									& 0.028 & 0.005							\\
+Genetic Algorithms (XX Objective Function)		& &											& &										\\
+\bottomrule
+\end{tabular}
+\end{center}
+\caption{4 Positions; 7 Possible Digits}
+\label{fig:compare_4_7}
+\end{table}
+
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{l c c c c}
+\toprule
+\multirow{2}{*}{\bfseries Optimization Method} 		& \multicolumn{2}{c}{\bfseries Number of Guesses} 		& \multicolumn{2}{c}{\bfseries Runtime (Seconds)}	\\
+\cmidrule(lr){2-3}  \cmidrule(lr){4-5}				& $\mu$ & $\sigma$								& $\mu$ & $\sigma$							\\
+\cmidrule(lr){1-5}
+Knuth's Algorithm							& 6.0 & 0.000									& 4.663 & 0.269							\\
+Random Search/Random Sampling				& 5.4 & 1.114									& 0.044 & 0.005							\\
+Maximizing Entropy (All Steps)					& 5.1 & 0.943									& 53.689 & 1.9444							\\
+Maximizing Entropy (Except First Step)			& 5.4 & 0.735									& 1.464 & 1.162							\\
+Simulated Annealing (Bernier Objective Function)	& 9.1 & 1.578									& 0.290 & 0.478							\\
+Simulated Annealing (Entropy Objective Function)	& 5.5 & 1.023									& 0.043 & 0.005							\\
+Genetic Algorithms (XX Objective Function)		& &											& &										\\
+\bottomrule
+\end{tabular}
+\end{center}
+\caption{4 Positions; 8 Possible Digits}
+\label{fig:compare_4_8}
+\end{table}
+
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{l c c c c}
+\toprule
+\multirow{2}{*}{\bfseries Optimization Method} 		& \multicolumn{2}{c}{\bfseries Number of Guesses} 		& \multicolumn{2}{c}{\bfseries Runtime (Seconds)}	\\
+\cmidrule(lr){2-3}  \cmidrule(lr){4-5}				& $\mu$ & $\sigma$								& $\mu$ & $\sigma$							\\
+\cmidrule(lr){1-5}
+Knuth's Algorithm							& 7.0 & 0.000									& 67.299 & 1.928							\\
+Random Search/Random Sampling				& 5.9 & 0.995									& 0.069 & 0.008							\\
+Maximizing Entropy (All Steps)					& 5.8 & 1.043									& 149.057 & 11.014							\\
+Maximizing Entropy (Except First Step)			& 5.7 & 0.714									& 5.702 & 4.282							\\
+Simulated Annealing (Bernier Objective Function)	& 8.8 & 1.824									& 0.191 & 0.331							\\
+Simulated Annealing (Entropy Objective Function)	& 6.2 & 1.288									& 0.091 & 0.021							\\
+Genetic Algorithms (XX Objective Function)		& &											& &										\\
+\bottomrule
+\end{tabular}
+\end{center}
+\caption{4 Positions; 9 Possible Digits}
+\label{fig:compare_4_9}
+\end{table}
+
+\newpage
+
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{l c c c c}
+\toprule
+\multirow{2}{*}{\bfseries Optimization Method} 		& \multicolumn{2}{c}{\bfseries Number of Guesses} 		& \multicolumn{2}{c}{\bfseries Runtime (Seconds)}	\\
+\cmidrule(lr){2-3}  \cmidrule(lr){4-5}				& $\mu$ & $\sigma$								& $\mu$ & $\sigma$							\\
+\cmidrule(lr){1-5}
+Knuth's Algorithm							& 6.0 & 0.000									& 84.160 & 9.606							\\
+Random Search/Random Sampling				& 6.6 & 1.020									& 0.098 & 0.006							\\
+Maximizing Entropy (All Steps)					& 5.8 & 1.062									& 344.603 & 21.921							\\
+Maximizing Entropy (Except First Step)			& 6.0 & 0.775									& 13.557 & 9.339							\\
+Simulated Annealing (Bernier Objective Function)	& 9.4 & 0.970									& 0.248 & 0.513							\\
+Simulated Annealing (Entropy Objective Function)	& 6.0 & 1.304									& 0.127 & 0.009							\\
+Genetic Algorithms (XX Objective Function)		& &											& &										\\
+\bottomrule
+\end{tabular}
+\end{center}
+\caption{4 Positions; 10 Possible Digits}
+\label{fig:compare_4_10}
+\end{table}
+
+\newpage
+
+%necessary for non-cited references to show up
 \nocite{runarsson2010adapting}
 \nocite{merelo2010finding}
 \nocite{doerr2013playing}
 \nocite{merelo2013improving}
 \nocite{snydermastermind}
-\nocite{knuth76}
+\nocite{neuwirth1982some}
+\nocite{kooi2005yet}
 
 \bibliographystyle{plain} 
 \bibliography{project}
