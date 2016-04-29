@@ -107,6 +107,55 @@ for c in alphabet_sizes:
             print "avg number of guesses: %.1f (std: %.3f), avg run time: %.3f (std: %.3f)" % (meancnt, cnterror, meanrun, runerror)
         #################
 
+        # ################
+        # print "\n*** MAXIMIZING ENTROPY AT ALL STEPS ***"
+        
+        # cnt = np.zeros(nsims)
+        # runtime = np.zeros(nsims)
+        
+        # for i in range(nsims):
+        #     start = time.time()
+        #     cnt[i] = e.entropy_all(cl=l, nc=c, code=secret, silent=silent_mode)
+        #     runtime[i] = time.time() - start
+        
+        # meancnt = np.mean(cnt)
+        # cnterror = np.std(cnt)
+        # meanrun = np.mean(runtime)
+        # runerror = np.std(runtime)
+        
+        # if "Entropy-all" not in results:
+        #     results["Entropy-all"] = [((c, l), meancnt, meanrun, cnterror, runerror)]
+        # else:
+        #     results["Entropy-all"] += [((c, l), meancnt, meanrun, cnterror, runerror)]
+        # if summary_stats:
+        #     print "avg number of guesses: %.1f (std: %.3f), avg run time: %.3f (std: %.3f)" % (meancnt, cnterror, meanrun, runerror)
+        # ################
+
+        ################
+        # print "\n*** MAXIMIZING ENTROPY (EXCEPT FIRST STEP) ***" # COMPARABLE PERFORMANCE & MUCH FASTER!
+        print "\n*** MAXIMIZING ENTROPY ***"
+        
+        cnt = np.zeros(nsims)
+        runtime = np.zeros(nsims)
+        
+        for i in range(nsims):
+            start = time.time()
+            cnt[i] = e.entropy_minusone(cl=l, nc=c, code=secret, silent=silent_mode)
+            runtime[i] = time.time() - start
+        
+        meancnt = np.mean(cnt)
+        cnterror = np.std(cnt)
+        meanrun = np.mean(runtime)
+        runerror = np.std(runtime)
+        
+        if "Entropy-minusone" not in results:
+            results["Entropy-minusone"] = [((c, l), meancnt, meanrun, cnterror, runerror)]
+        else:
+            results["Entropy-minusone"] += [((c, l), meancnt, meanrun, cnterror, runerror)]
+        if summary_stats:
+            print "avg number of guesses: %.1f (std: %.3f), avg run time: %.3f (std: %.3f)" % (meancnt, cnterror, meanrun, runerror)
+        ################
+
         #################
         print "\n*** SIMULATED ANNEALING ***"
 
@@ -132,14 +181,14 @@ for c in alphabet_sizes:
         #################
 
         ################
-        print "\n*** MAXIMIZING ENTROPY ***"
+        print "\n*** SIMULATED ANNEALING - ENTROPY OBJECTIVE FUNCTION ***"
         
         cnt = np.zeros(nsims)
         runtime = np.zeros(nsims)
         
         for i in range(nsims):
             start = time.time()
-            cnt[i] = e.entropy(cl=l, nc=c, code=secret, silent=silent_mode)
+            cnt[i] = e.SAentropy().runSA(cl=l, nc=c, code=secret, silent=silent_mode)
             runtime[i] = time.time() - start
         
         meancnt = np.mean(cnt)
@@ -147,10 +196,10 @@ for c in alphabet_sizes:
         meanrun = np.mean(runtime)
         runerror = np.std(runtime)
         
-        if "Entropy" not in results:
-            results["Entropy"] = [((c, l), meancnt, meanrun, cnterror, runerror)]
+        if "SA-entropy" not in results:
+            results["SA-entropy"] = [((c, l), meancnt, meanrun, cnterror, runerror)]
         else:
-            results["Entropy"] += [((c, l), meancnt, meanrun, cnterror, runerror)]
+            results["SA-entropy"] += [((c, l), meancnt, meanrun, cnterror, runerror)]
         if summary_stats:
             print "avg number of guesses: %.1f (std: %.3f), avg run time: %.3f (std: %.3f)" % (meancnt, cnterror, meanrun, runerror)
         ################

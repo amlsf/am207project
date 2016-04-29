@@ -5,9 +5,11 @@
 
 \title{AM207 Final Project: Mastermind}
 \author{Gioia Domined\`o \and Amy Lee \and Kendrick Lo \and Reiner Maat}
+
+\pagenumbering{arabic}
+
 \begin{document}
 \maketitle{}
-
 
 \begin{abstract}
 %\textcolor{red}{TODO}
@@ -89,9 +91,9 @@ H(\text{guess} | \text{possible codes}) = \sum_{i=1}^R P(r_i) I(r_i) = - \sum_{i
 
 \noindent where $I(r_i)$ denotes the information content of the $i$th response category. We use $b=2$, meaning that we are measuring entropy in shannons, but note that any other value of $b$ would yield a consistent ranking between guesses.
 
-Practically, we calculate the probability of each response category for a given guess by counting (and normalizing) the total number of possible responses in each category, given the hidden codes that are still possible at that particular stage in the game. The (negative) value will depend on the shape of the probability distribution across the response categories, with the maximum entropy of $0$ only achievable when there is certainty of a particular outcome (i.e. $log_2(1)=0$).
+Practically, we calculate the probability of each response category for a given guess by counting (and normalizing) the total number of possible responses in each category, given the hidden codes that are still possible at that particular stage in the game. The value will depend on the shape of the probability distribution across the response categories, with the minimum entropy of $0$ only achievable when there is certainty of a particular outcome (i.e. $log_2(1)=0$).
 
-In order to improve her performance, the code-breaker will want to pick the guess that results in the highest entropy \textendash \ or, if there are ties, one of the best guesses. This can be achieved through an exhaustive calculation of the entropy of all possible guesses at each stage or, for larger state spaces, through a local search technique such as simulated annealing or genetic algorithms. 
+In order to improve her performance, the code-breaker will want to pick the guess that results in the highest entropy \textendash \ or, if there are ties, one of the best guesses \textendash \ in order to be able to discard more possible codes at the next step. This can be achieved through an exhaustive calculation of the entropy of all possible guesses at each stage or, for larger state spaces, through a local search technique such as simulated annealing or genetic algorithms. 
 
 \subsection{Simulated Annealing}
 
@@ -114,9 +116,17 @@ In order to improve her performance, the code-breaker will want to pick the gues
 \newpage
 \appendix
 
-\section{Figures and Tables}
+\section{Figures}
 
-\noindent \textcolor{red}{TODO}
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.6\textwidth]{img/entropy}
+\caption{Entropy distributions for classic game parameters}
+\label{fig:entropy}
+\end{figure}
+
+\newpage
+\section{Results}
 
 \newpage
 
