@@ -272,9 +272,9 @@ print results
 # plt.legend(loc="best")
 # plt.show()
 
-print "printing plot of number of guesses by word length (6 possible digits)"
+print "printing plot of number of guesses by word length (fixed possible digits)"
 plt.figure()
-plt.title("Number of Guesses by word length (6 possible digits)")
+plt.title("Number of Guesses by word length (fixed possible digits)")
 plt.xlabel("word length")
 plt.ylabel("guesses")
 plt.xlim(3, 11, 1)
@@ -283,7 +283,7 @@ for model in results.keys():
     # ((c, l), cnt, runtime)
     points_x, points_y, err = [], [], []
     for point in results[model]:
-        if point[0][0] == 3:  # fix to standard length
+        if point[0][0] == alphabet_sizes[0]:  # fix to standard length
             points_x += [point[0][1]]
             points_y += [point[1]]
             err += [point[3]]
@@ -291,9 +291,9 @@ for model in results.keys():
 plt.legend(loc="best")
 plt.show()
 
-print "printing plot of number of execution time by word length (6 possible digits)"
+print "printing plot of number of execution time by word length (fixed possible digits)"
 plt.figure()
-plt.title("Execution Time by word length (6 possible digits)")
+plt.title("Execution Time by word length (fixed possible digits)")
 plt.xlabel("word length")
 plt.ylabel("execution time (seconds)")
 plt.xlim(3, 11, 1)
@@ -301,7 +301,7 @@ for model in results.keys():
     # ((c, l), cnt, runtime)
     points_x, points_y, err = [], [], []
     for point in results[model]:
-        if point[0][0] == 3:  # fix to standard length
+        if point[0][0] == alphabet_sizes[0]:  # fix to standard length
             points_x += [point[0][1]]
             points_y += [point[2]]
             err += [point[4]]
