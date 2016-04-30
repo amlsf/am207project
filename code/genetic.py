@@ -124,88 +124,27 @@ class GAsim():
         :param pop_size: maximum size for a given population
         :param gen_size: maximum number of population generations
         """
-
-        def crossover(code1, code2):
-            """
-            Up to number of crossovers equal to self.crossover_points, each with probability of self.crossover_prob,
-            crosses code1 with code2
-            """
-            result = copy.copy(code1)
-
-            for i in range(self.game._L):
-                if np.random.rand() <= self.crossover_prob:
-                    result[i] = code2[i]
-
-            return result
-
-
-        def mutate(code):
-            """
-            With a probability of self.crossover_mutation_prob, crossover is followed by a mutation that replaces
-            the color of one randomly chosen position by a random other color
-            """
-            result = copy.copy(code)
-
-            pos = np.random.choice(self.game._L)
-            color = np.random.choice(self.game._C)
-            # try again until mutate to a different color
-            while result[pos] == color:
-                pos = np.random.choice(self.game._L)
-                color = np.random.choice(self.game._C)
-
-            result[pos] = color
-
-            return result
-
-        def permute(code):
-            """
-            With a probability of self.permutation_prob, colors of two random positions are switched
-            """
-            result = copy.copy(code)
-
-            if np.random.rand() <= self.permutation_prob:
-                pos_a, pos_b = np.random.choice(self.game._L, 2, replace=False)
-
-                result[pos_a], result[pos_b] = result[pos_b], result[pos_a]
-
-            return result
-
-        def invert(code):
-            """
-            with probability of self.inversion_prob, two randomly chosen positions have their sequence of colors
-            between these two positions inverted
-            """
-            result = copy.copy(code)
-
-            if np.random.rand() <= self.inversion_prob:
-                pos_range = np.random.choice(self.game._L, 2, replace=False)
-                pos1, pos2 = np.sort(pos_range)
-                flipped = np.fliplr([result[pos1:pos2]])[0]
-                result[pos1:pos2] = flipped
-
-            return result
-
-        # TODO vectorize so can loop through generations, entire population at a time (see lecture code)
-
         # initialize population
         population = np.random.choice(self.game._C, (pop_size, self.game._L), replace=True)
         population = [list(item) for item in population]
 
         elite = []
         h = 1
-        while len(elite) <= pop_size and h <= gen_size:
+        # TODO
+        # len(elite) <= pop_size and h <= gen_size
+        while not elite:
 
             children = []
 
             for i in range(pop_size-1):
-                child = crossover(population[i], population[i+1])
+                child = self.crossover(population[i], population[i+1])
 
                 if np.random.rand() <= self.crossover_mutation_prob:
-                    child = mutate(child)
+                    child = self.mutate(child)
 
-                child = permute(child)
+                child = self.permute(child)
 
-                child = invert(child)
+                child = self.invert(child)
 
                 children.append(child)
 
@@ -222,7 +161,6 @@ class GAsim():
 
             # Pick ones where score is 0
             eligibles = [e for (score, e) in pop_score if score == 0]
-            # print eligibles
 
             # no good ones, move on to next generation to try again
             if len(eligibles) == 0:
@@ -239,12 +177,10 @@ class GAsim():
 
             # add eligible to elite
             for eligible in eligibles:
-                # Make sure we don't overflow our elite size (Ei <= popsize)
                 if len(elite) == pop_size:
                     break
 
-                # TODO
-                if not eligible in elite:
+                if eligible not in elite:
                     elite.append(eligible)
 
             # Prepare the parent population for the next generation based
@@ -261,6 +197,65 @@ class GAsim():
             h += 1
 
         return elite
+
+    def crossover(self, code1, code2):
+        """
+        Up to number of crossovers equal to self.crossover_points, each with probability of self.crossover_prob,
+        crosses code1 with code2
+        """
+        result = copy.copy(code1)
+
+        for i in range(self.game._L):
+            if np.random.rand() <= self.crossover_prob:
+                result[i] = code2[i]
+
+        return result
+
+    def mutate(self, code):
+        """
+        With a probability of self.crossover_mutation_prob, crossover is followed by a mutation that replaces
+        the color of one randomly chosen position by a random other color
+        """
+        result = copy.copy(code)
+
+        pos = np.random.choice(self.game._L)
+        color = np.random.choice(self.game._C)
+        # try again until mutate to a different color
+        while result[pos] == color:
+            pos = np.random.choice(self.game._L)
+            color = np.random.choice(self.game._C)
+
+        result[pos] = color
+
+        return result
+
+    def permute(self, code):
+        """
+        With a probability of self.permutation_prob, colors of two random positions are switched
+        """
+        result = copy.copy(code)
+
+        if np.random.rand() <= self.permutation_prob:
+            pos_a, pos_b = np.random.choice(self.game._L, 2, replace=False)
+
+            result[pos_a], result[pos_b] = result[pos_b], result[pos_a]
+
+        return result
+
+    def invert(self, code):
+        """
+        with probability of self.inversion_prob, two randomly chosen positions have their sequence of colors
+        between these two positions inverted
+        """
+        result = copy.copy(code)
+
+        if np.random.rand() <= self.inversion_prob:
+            pos_range = np.random.choice(self.game._L, 2, replace=False)
+            pos1, pos2 = np.sort(pos_range)
+            flipped = np.fliplr([result[pos1:pos2]])[0]
+            result[pos1:pos2] = flipped
+
+        return result
 
     def runGA(self, cl=4, nc=6, code=None, silent=False, initial=None):
         """
@@ -288,16 +283,18 @@ class GAsim():
         while self.game.gameover is False:
             eligibles = self.evolve_population(self.max_pop, self.max_gen)
 
-            # TODO fix this
-            if not eligibles:
-                print 'NO ELIGIBLES!!!!'
-
             code = eligibles.pop()
             while code in [c for (c, r) in self._prev_guesses]:
-                code = eligibles.pop()
+                if not eligibles:
+                    continue
+                else:
+                    code = eligibles.pop()
 
             response = self.game.guess_code(code)
             self._prev_guesses.append((code, response))
+
+        # TODO check sa returning 'accepted iterations' instead of this?
+        return self.game.n_guessed
 
 
 if __name__ == "__main__":
