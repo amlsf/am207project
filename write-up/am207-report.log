@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  29 APR 2016 15:58
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  30 APR 2016 13:53
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -420,73 +420,192 @@ Underfull \hbox (badness 5533) in paragraph at lines 102--102
 of length $4$ has 14 pos-si-ble re-sponses:
  []
 
-[3] [4] <img/num_guesses.png, id=26, 514.92375pt x 366.36874pt>
+[3] [4] [5] <img/num_guesses.png, id=29, 526.96875pt x 376.40625pt>
 File: img/num_guesses.png Graphic file (type png)
 
 <use img/num_guesses.png>
-Package pdftex.def Info: img/num_guesses.png used on input line 145.
-(pdftex.def)             Requested size: 281.85587pt x 200.54189pt.
- <img/entropy.png, id=27, 498.86375pt x 367.3725pt>
+Package pdftex.def Info: img/num_guesses.png used on input line 169.
+(pdftex.def)             Requested size: 281.85587pt x 201.33228pt.
+ <img/entropy.png, id=30, 503.8825pt x 376.40625pt>
 File: img/entropy.png Graphic file (type png)
 
 <use img/entropy.png>
-Package pdftex.def Info: img/entropy.png used on input line 152.
-(pdftex.def)             Requested size: 281.85587pt x 207.57144pt.
- [5 <./img/num_guesses.png> <./img/entropy.png>]
+Package pdftex.def Info: img/entropy.png used on input line 176.
+(pdftex.def)             Requested size: 281.85587pt x 210.55057pt.
+ [6 <./img/num_guesses.png> <./img/entropy.png>]
+<img/knuth_guesses.png, id=36, 497.86pt x 370.38374pt>
+File: img/knuth_guesses.png Graphic file (type png)
+
+<use img/knuth_guesses.png>
+Package pdftex.def Info: img/knuth_guesses.png used on input line 186.
+(pdftex.def)             Requested size: 245.71754pt x 182.80643pt.
+
+<img/knuth_runtime.png, id=37, 514.92375pt x 370.38374pt>
+File: img/knuth_runtime.png Graphic file (type png)
+
+<use img/knuth_runtime.png>
+Package pdftex.def Info: img/knuth_runtime.png used on input line 187.
+(pdftex.def)             Requested size: 245.71754pt x 176.74228pt.
+
+Overfull \hbox (21.68007pt too wide) in paragraph at lines 186--188
+ [][][] 
+ []
+
+<img/randomsearch_guesses.png, id=38, 497.86pt x 370.38374pt>
+File: img/randomsearch_guesses.png Graphic file (type png)
+
+<use img/randomsearch_guesses.png>
+Package pdftex.def Info: img/randomsearch_guesses.png used on input line 194.
+(pdftex.def)             Requested size: 245.71754pt x 182.80643pt.
+
+<img/randomsearch_runtime.png, id=39, 518.93875pt x 370.38374pt>
+File: img/randomsearch_runtime.png Graphic file (type png)
+
+<use img/randomsearch_runtime.png>
+Package pdftex.def Info: img/randomsearch_runtime.png used on input line 195.
+(pdftex.def)             Requested size: 245.71754pt x 175.38023pt.
+
+Overfull \hbox (21.68007pt too wide) in paragraph at lines 194--196
+ [][][] 
+ []
+
+[7 <./img/knuth_guesses.png> <./img/knuth_runtime.png> <./img/randomsearch_gues
+ses.png> <./img/randomsearch_runtime.png>]
+<img/entropyall_guesses.png, id=48, 497.86pt x 370.38374pt>
+File: img/entropyall_guesses.png Graphic file (type png)
+
+<use img/entropyall_guesses.png>
+Package pdftex.def Info: img/entropyall_guesses.png used on input line 204.
+(pdftex.def)             Requested size: 245.71754pt x 182.80643pt.
+
+<img/entropyall_runtime.png, id=49, 514.92375pt x 370.38374pt>
+File: img/entropyall_runtime.png Graphic file (type png)
+
+<use img/entropyall_runtime.png>
+Package pdftex.def Info: img/entropyall_runtime.png used on input line 205.
+(pdftex.def)             Requested size: 245.71754pt x 176.74228pt.
+
+Overfull \hbox (21.68007pt too wide) in paragraph at lines 204--206
+ [][][] 
+ []
+
+<img/entropyminusone_guesses.png, id=50, 497.86pt x 370.38374pt>
+File: img/entropyminusone_guesses.png Graphic file (type png)
+
+<use img/entropyminusone_guesses.png>
+Package pdftex.def Info: img/entropyminusone_guesses.png used on input line 212
+.
+(pdftex.def)             Requested size: 245.71754pt x 182.80643pt.
+
+<img/entropyminusone_runtime.png, id=51, 505.89pt x 370.38374pt>
+File: img/entropyminusone_runtime.png Graphic file (type png)
+
+<use img/entropyminusone_runtime.png>
+Package pdftex.def Info: img/entropyminusone_runtime.png used on input line 213
+.
+(pdftex.def)             Requested size: 245.71754pt x 179.90152pt.
+
+Overfull \hbox (21.68007pt too wide) in paragraph at lines 212--214
+ [][][] 
+ []
+
+[8 <./img/entropyall_guesses.png> <./img/entropyall_runtime.png> <./img/entropy
+minusone_guesses.png> <./img/entropyminusone_runtime.png>]
+<img/sabernier_guesses.png, id=59, 505.89pt x 370.38374pt>
+File: img/sabernier_guesses.png Graphic file (type png)
+
+<use img/sabernier_guesses.png>
+Package pdftex.def Info: img/sabernier_guesses.png used on input line 222.
+(pdftex.def)             Requested size: 245.71754pt x 179.90152pt.
+
+<img/sabernier_runtime.png, id=60, 509.905pt x 370.38374pt>
+File: img/sabernier_runtime.png Graphic file (type png)
+
+<use img/sabernier_runtime.png>
+Package pdftex.def Info: img/sabernier_runtime.png used on input line 223.
+(pdftex.def)             Requested size: 245.71754pt x 178.48297pt.
+
+Overfull \hbox (21.68007pt too wide) in paragraph at lines 222--224
+ [][][] 
+ []
+
+<img/saentropy_guesses.png, id=61, 497.86pt x 370.38374pt>
+File: img/saentropy_guesses.png Graphic file (type png)
+
+<use img/saentropy_guesses.png>
+Package pdftex.def Info: img/saentropy_guesses.png used on input line 230.
+(pdftex.def)             Requested size: 245.71754pt x 182.80643pt.
+
+<img/saentropy_runtime.png, id=62, 518.93875pt x 370.38374pt>
+File: img/saentropy_runtime.png Graphic file (type png)
+
+<use img/saentropy_runtime.png>
+Package pdftex.def Info: img/saentropy_runtime.png used on input line 231.
+(pdftex.def)             Requested size: 245.71754pt x 175.38023pt.
+
+Overfull \hbox (21.68007pt too wide) in paragraph at lines 230--232
+ [][][] 
+ []
+
+[9 <./img/sabernier_guesses.png> <./img/sabernier_runtime.png> <./img/saentropy
+_guesses.png> <./img/saentropy_runtime.png>]
+<img/gabernier_guesses.png, id=70, 497.86pt x 370.38374pt>
+File: img/gabernier_guesses.png Graphic file (type png)
+
+<use img/gabernier_guesses.png>
+Package pdftex.def Info: img/gabernier_guesses.png used on input line 240.
+(pdftex.def)             Requested size: 245.71754pt x 182.80643pt.
+
+<img/gabernier_runtime.png, id=71, 514.92375pt x 370.38374pt>
+File: img/gabernier_runtime.png Graphic file (type png)
+
+<use img/gabernier_runtime.png>
+Package pdftex.def Info: img/gabernier_runtime.png used on input line 241.
+(pdftex.def)             Requested size: 245.71754pt x 176.74228pt.
+
+Overfull \hbox (21.68007pt too wide) in paragraph at lines 240--242
+ [][][] 
+ []
+
+<img/gaentropy_guesses.png, id=72, 497.86pt x 370.38374pt>
+File: img/gaentropy_guesses.png Graphic file (type png)
+
+<use img/gaentropy_guesses.png>
+Package pdftex.def Info: img/gaentropy_guesses.png used on input line 248.
+(pdftex.def)             Requested size: 245.71754pt x 182.80643pt.
+
+<img/gaentropy_runtime.png, id=73, 514.92375pt x 370.38374pt>
+File: img/gaentropy_runtime.png Graphic file (type png)
+
+<use img/gaentropy_runtime.png>
+Package pdftex.def Info: img/gaentropy_runtime.png used on input line 249.
+(pdftex.def)             Requested size: 245.71754pt x 176.74228pt.
+
+Overfull \hbox (21.68007pt too wide) in paragraph at lines 248--250
+ [][][] 
+ []
+
+[10 <./img/gabernier_guesses.png> <./img/gabernier_runtime.png> <./img/gaentrop
+y_guesses.png> <./img/gaentropy_runtime.png>]
 LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <10.95> not available
-(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 164.
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 261.
+ [11] [12] [13] [14] [15]
 
-Overfull \hbox (6.95552pt too wide) in paragraph at lines 162--176
- [] 
- []
+LaTeX Warning: Citation `snydermastermind' undefined on input line 434.
 
-
-Overfull \hbox (6.95552pt too wide) in paragraph at lines 183--197
- [] 
- []
-
-
-Overfull \hbox (6.95552pt too wide) in paragraph at lines 204--218
- [] 
- []
-
-[6]
-Overfull \hbox (6.95552pt too wide) in paragraph at lines 227--241
- [] 
- []
-
-
-Overfull \hbox (6.95552pt too wide) in paragraph at lines 248--262
- [] 
- []
-
-
-Overfull \hbox (6.95552pt too wide) in paragraph at lines 269--283
- [] 
- []
-
-[7]
-Overfull \hbox (6.95552pt too wide) in paragraph at lines 292--306
- [] 
- []
-
-[8]
-
-LaTeX Warning: Citation `snydermastermind' undefined on input line 318.
-
-(./am207-report.bbl) [9] (./am207-report.aux)
+(./am207-report.bbl) [16] (./am207-report.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 4938 strings out of 493089
- 72566 string characters out of 6134842
- 132609 words of memory out of 5000000
- 8284 multiletter control sequences out of 15000+600000
+ 5028 strings out of 493089
+ 75047 string characters out of 6134842
+ 130685 words of memory out of 5000000
+ 8358 multiletter control sequences out of 15000+600000
  40001 words of font info for 114 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 43i,10n,40p,964b,331s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 43i,10n,47p,1760b,378s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2015/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/te
 xlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texl
@@ -497,10 +616,10 @@ exmf-dist/fonts/type1/public/mathpazo/fplmri.pfb></usr/local/texlive/2015/texmf
 -dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/local/texlive/2015/texmf-dist/f
 onts/type1/urw/palatino/uplr8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/ty
 pe1/urw/palatino/uplri8a.pfb>
-Output written on am207-report.pdf (9 pages, 156821 bytes).
+Output written on am207-report.pdf (16 pages, 347857 bytes).
 PDF statistics:
- 78 PDF objects out of 1000 (max. 8388607)
- 51 compressed objects within 1 object stream
+ 132 PDF objects out of 1000 (max. 8388607)
+ 66 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 16 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 96 words of extra memory for PDF output out of 10000 (max. 10000000)
 

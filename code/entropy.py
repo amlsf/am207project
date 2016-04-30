@@ -291,6 +291,8 @@ def entropy_minusone(cl=4, nc=6, code=None, silent=False):
 #
 # LOCAL SEARCH: SIMULATED ANNEALING
 #
+# adapted from annealing.py
+#
 ######################
 
 class SAentropy():
@@ -436,6 +438,9 @@ class SAentropy():
                 prev_E = new_E
                 it += 1
 
+                # delete current guess from possible guesses
+                del self.possible_guesses[''.join(map(str, propose_guess))]
+
                 # actually make the guess
                 response = self._sa.guess_code(propose_guess)
 
@@ -563,6 +568,284 @@ class SAentropy():
 
         return output[2]  # number of guesses
 
+######################
+#
+# LOCAL SEARCH: GENETIC ALGORITHMS
+#
+# adapted from genetic.py
+#
+######################
+
+class GAentropy():
+    '''
+    Uses entropy as the objective function to maximize in the genetic algorithms
+    local search algorithm.
+    '''
+
+    def __init__(self):
+        # store previous guesses, along with response in the form of a tuple
+        # (code, response) where code is the python array and response is the
+        # (b, w) tuple as returned by guess_code;
+        self._prev_guesses = []
+
+        self.game = None  # game board instance
+
+        # experiment with these parameters
+        self.max_pop = 60
+        self.max_gen = 100
+
+        self.crossover_points = 2
+        self.crossover_prob = 0.5
+        self.crossover_mutation_prob = 0.03
+        self.permutation_prob = 0.03
+        self.inversion_prob = 0.02
+
+    def _objective_function(self, guess):
+        '''
+        Objective function: maximize shannon entropy (i.e. wider probability distribution)
+        '''
+
+        # check that guess matches previous responses
+        assert self.game._codeOK(guess)
+
+        # convert to string
+        guess_string = ''.join(map(str, guess))
+
+        # return negative value if the code is not a possible guess
+        # minimum entropy for valid codes = 0
+        if guess_string not in self.possible_guesses:
+            return -1
+
+        # calculate shannon entropy for the guess, given the remaining possible guesses
+
+        # calculate probability of each response category
+        response_prob = dict(zip(self.responses, [0.0] * self.n_responses))
+        for c in self.possible_guesses: # possible real codes
+            response_prob[self.game.check_guess(guess=guess, answer=self.possible_guesses[c])] += 1
+
+        # calculate entropy of guess
+        entropy = 0.0
+        for r in self.responses:
+            prob = response_prob[r] / self.n_possible_guesses
+            if prob > 0: # assumes log(0) = 0
+                entropy -= prob * np.log2(prob)
+
+        return entropy
+
+    def evolve_population(self, pop_size, gen_size):
+        '''
+        :param pop_size: maximum size for a given population
+        :param gen_size: maximum number of population generations
+        '''
+        # initialize population
+        population = np.random.choice(self.game._C, (pop_size, self.game._L), replace=True)
+        population = [list(item) for item in population]
+
+        elite = []
+        h = 1
+
+        while not elite:
+
+            children = []
+
+            for i in range(pop_size-1):
+                child = self.crossover(population[i], population[i+1])
+
+                if np.random.rand() <= self.crossover_mutation_prob:
+                    child = self.mutate(child)
+
+                child = self.permute(child)
+
+                child = self.invert(child)
+
+                children.append(child)
+
+            # append last one
+            children.append(population[pop_size-1])
+
+            # Calculate fitness score for each child. The closer to 0, the better
+            pop_score = []
+            for c in children:
+                pop_score.append((self._objective_function(c), c))
+
+            # sort population based on fitness in ascending order
+            # pop_score = sorted(pop_score, key=lambda x: x[0])
+
+            # Pick ones where score is 0
+            eligibles = [e for (score, e) in pop_score if score>=0]
+
+            # no good ones, move on to next generation to try again
+            if len(eligibles) == 0:
+                h += 1
+                continue
+
+            # remove duplicates
+            for code in eligibles:
+                if code in elite:
+                    elite.remove(code)
+
+                    # replace the removed duplicate elite code with a random one
+                    elite.append(list(np.random.choice(self.game._C, self.game._L, replace=True)))
+
+            # add eligible to elite
+            for eligible in eligibles:
+                if len(elite) == pop_size:
+                    break
+
+                if eligible not in elite:
+                    elite.append(eligible)
+
+            # Prepare the parent population for the next generation based
+            # on the current generation
+            population = []
+            population.extend(eligibles)
+
+            # fill the rest of the population with random codes up to pop_size
+            j = len(eligibles)
+            while j < pop_size:
+                population.append(list(np.random.choice(self.game._C, self.game._L, replace=True)))
+                j += 1
+
+            h += 1
+
+        return elite
+
+    def crossover(self, code1, code2):
+        '''
+        Up to number of crossovers equal to self.crossover_points, each with probability of self.crossover_prob,
+        crosses code1 with code2
+        '''
+        result = copy.copy(code1)
+
+        for i in range(self.game._L):
+            if np.random.rand() <= self.crossover_prob:
+                result[i] = code2[i]
+
+        return result
+
+    def mutate(self, code):
+        '''
+        With a probability of self.crossover_mutation_prob, crossover is followed by a mutation that replaces
+        the color of one randomly chosen position by a random other color
+        '''
+        result = copy.copy(code)
+
+        pos = np.random.choice(self.game._L)
+        color = np.random.choice(self.game._C)
+        # try again until mutate to a different color
+        while result[pos] == color:
+            pos = np.random.choice(self.game._L)
+            color = np.random.choice(self.game._C)
+
+        result[pos] = color
+
+        return result
+
+    def permute(self, code):
+        '''
+        With a probability of self.permutation_prob, colors of two random positions are switched
+        '''
+        result = copy.copy(code)
+
+        if np.random.rand() <= self.permutation_prob:
+            pos_a, pos_b = np.random.choice(self.game._L, 2, replace=False)
+
+            result[pos_a], result[pos_b] = result[pos_b], result[pos_a]
+
+        return result
+
+    def invert(self, code):
+        '''
+        with probability of self.inversion_prob, two randomly chosen positions have their sequence of colors
+        between these two positions inverted
+        '''
+        result = copy.copy(code)
+
+        if np.random.rand() <= self.inversion_prob:
+            pos_range = np.random.choice(self.game._L, 2, replace=False)
+            pos1, pos2 = np.sort(pos_range)
+            flipped = np.fliplr([result[pos1:pos2]])[0]
+            result[pos1:pos2] = flipped
+
+        return result
+
+    def runGA(self, cl=4, nc=6, code=None, silent=False, initial=None):
+        '''
+        Set up board and run GA algorithm
+        '''
+        # if code is provided, it must be in the form of a list or 1-D numpy array
+        self.game = mm.MMboard(codelength=cl, numcolors=nc, suppress_output=silent)
+        if code is None:
+            self.game.set_code()
+        else:
+            self.game.set_code(code)
+
+        # create a set of all possible hidden codes
+        self.possible_guesses = {}  # index is the string sequence, value is a cl-element tuple
+        digits = list(np.arange(nc))
+        for i in itertools.product(digits, repeat=cl):
+            self.possible_guesses[''.join(map(str, list(i)))] = list(i)
+        self.n_possible_guesses = len(self.possible_guesses)
+        assert self.n_possible_guesses == nc**cl
+
+        # create a list of all possible (b, w) responses
+        self.responses = list()
+        for l in range(cl, -1, -1):
+            self.responses.extend(list(itertools.combinations_with_replacement('BW', l)))
+        self.responses = [''.join(r) for r in self.responses]
+        self.responses.remove('B' * (cl - 1) + 'W') # not possible
+        self.responses = [(r.count('B'), r.count('W')) for r in self.responses] # consistent with game response format
+        self.n_responses = len(self.responses)
+
+        # initial guess
+        if initial:
+            ga_guess = initial
+        elif cl == 4 and nc == 6:
+            ga_guess = [1, 1, 2, 3]
+        else:
+            ga_guess = list(np.random.randint(0, nc, cl))
+
+        # delete current guess from possible guesses
+        del self.possible_guesses[''.join(map(str, ga_guess))]
+
+        # play the guess to get a response of colored (b) and white pegs.
+        response = self.game.guess_code(ga_guess)
+        self._prev_guesses.append((ga_guess, response))
+
+        # remove any codes that wouldn't give the same response
+        for code in self.possible_guesses.keys():
+            # uses class' built-in check_guess function
+            if self.game.check_guess(guess=self.possible_guesses[code], answer=ga_guess) != response:
+                del self.possible_guesses[code]
+        self.n_possible_guesses = len(self.possible_guesses)
+
+        while self.game.gameover is False:
+
+            eligibles = self.evolve_population(self.max_pop, self.max_gen)
+
+            ga_guess = eligibles.pop()
+
+            while ga_guess in [c for (c, r) in self._prev_guesses]:
+                if not eligibles:
+                    continue
+                else:
+                    ga_guess = eligibles.pop()
+
+            # delete current guess from possible guesses
+            del self.possible_guesses[''.join(map(str, ga_guess))]
+
+            response = self.game.guess_code(ga_guess)
+            self._prev_guesses.append((ga_guess, response))
+
+            # remove any codes that wouldn't give the same response
+            for code in self.possible_guesses.keys():
+                # uses class' built-in check_guess function
+                if self.game.check_guess(guess=self.possible_guesses[code], answer=ga_guess) != response:
+                    del self.possible_guesses[code]
+            self.n_possible_guesses = len(self.possible_guesses)
+
+        return self.game.n_guessed
+
 if __name__ == "__main__":
 
     np.seterr(divide='ignore') # supress warnings related to log(0)
@@ -583,4 +866,11 @@ if __name__ == "__main__":
     timer = time.time()
     s = SAentropy()
     s.runSA()
+    print 'Runtime: %0.2f seconds' % (time.time() - timer)
+
+    print
+    print '** METHOD 4: LOCAL SEARCH WITH GENETIC ALGORITHMS **'
+    timer = time.time()
+    g = GAentropy()
+    g.runGA()
     print 'Runtime: %0.2f seconds' % (time.time() - timer)

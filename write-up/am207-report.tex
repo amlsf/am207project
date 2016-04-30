@@ -6,7 +6,7 @@
 \usepackage{multirow}
 
 \title{AM207 Final Project: Mastermind}
-\author{Gioia Domined\`o \and Amy Lee \and Kendrick Lo \and Reiner Maat}
+\author{Gioia Domined\`o \and Amy Lee \and Kendrick Lo \and Reinier Maat}
 
 \begin{document}
 \maketitle{}
@@ -115,13 +115,37 @@ In order to improve her performance, the code-breaker will want to pick the gues
 
 Knuth's algorithm and maximizing shannon entropy are both examples of global optimization techniques. These approaches work well when optimizing across relatively small state spaces, but they are not guaranteed to scale well as the problem size increases. For example, maximizing shannon entropy has complexity $O(|s(e_i^2)|)$ at the $i$th round of the game, i.e. the runtime scales quadratically with the number of possible codes.
 
-Simulated annealing provides an alternative optimization approach that does not require an exhaustive search of the state space\footnote{For the sake of brevity, the simulated annealing algorithm is not described here.}. The effectiveness of this technique will depend upon the objective function that is used to evaluate potential guesses, and the method that is used to propose potential new guesses. As mentioned above, we can use simulated annealing as a faster alternative to calculating the shannon entropy of all guesses. In this case, new guesses will be proposed by randomly picking from the set of remaining possible guesses, and will be evaluated by calculating their entropy.
+Simulated annealing provides an alternative optimization approach that does not require an exhaustive search of the state space\footnote{For the sake of brevity, the simulated annealing algorithm is not described here.}. The effectiveness and runtime of this technique will depend upon the objective function that is used to evaluate potential guesses, and the method that is used to propose potential new guesses. As mentioned above, we can use simulated annealing as a faster alternative to calculating the shannon entropy of all guesses. In this case, new guesses will be proposed by randomly picking from the set of remaining possible guesses, and will be evaluated by calculating their entropy.
 
-An alternative approach is described by Bernier et al. \cite{bernier1996solving}. Under this framework, new guesses are proposed by randomly picking from the set of all guesses that have not already been used. Not updating the set of possible guesses at each turn reduces the runtime complexity of the algorithm. The proposed guess's objective function is defined as the difference between the black and white pegs obtained from previous guesses and the number of black and white pegs that would have been obtained if the newly proposed guess was the right code. Once again, this approach has the advantage of being computationally inexpensive.
+An alternative approach is described by Bernier et al. \cite{bernier1996solving}. Under this framework, new guesses are proposed by randomly picking from the set of all guesses that have not already been used. Not updating the set of possible guesses at each turn reduces the runtime complexity of the algorithm. The proposed guess's objective function is calculated by comparing it to all the previously played guesses. Concretely, the cost function is defined as:
+\[
+C = \sum_{i=1}^n | \Delta n_W^i |  + | \Delta n_B^i + \Delta n_W^i |
+\]
+
+\noindent where $n$ represents the number of guesses played until that point in the game, and $\Delta n_B$ and $\Delta n_W$ denote the difference between the black and white pegs  obtained from previous guesses and the number of black and white pegs that would have been obtained if the newly proposed guess was the right code. Once again, this approach has the advantage of being computationally inexpensive despite the changing game environment: the number of white pegs are simply computed and added to the cost so that it increases with the number of unsatisfied rules (or pegs).
 
 \subsection{Genetic Algorithms}
 
 \noindent \textcolor{red}{TODO}
+
+%Both simulated annealing and genetic algorithms used the same cost function, where each combination is compared with all the previously played guesses. It is defined as:  
+%$$C = \sum_{i=1}^n abs (\Delta n_W^i)  + abs(\Delta n_B^i + \Delta n_W^i )$$ 
+%where $n$ is the number of guesses played and $\Delta n$ are the white and black peg differences between the target combination and the guess $i$. The number of different white and black pegs are computed and added to the cost such that the cost increases with the number of unsatisfied rules. In this manner, the constraints are added in a changing environment. 
+%------------------------------------------------------------------------------------------------------
+%Genetic algorithms are a type of evolutionary algorithm which generate solutions to optimization problems inspired by natural evolution. We create a population of 60 candidate solutions that we evolve towards better solutions in subsequent populations by selecting the most eligible combinations from previous generations, for a total 100 generations. In order to maintain diversity to efficiently explore the changing landscape, we apply four different types of alterations for each candidate solution: 
+%
+%1. Crossover: Given a two codes, each index in the first code has a 0.5 probability of being crossed with the corresponding index in the second code. 
+%
+%2. Mutation: With a 0.03 probability, crossover is followed by a mutation that replaces the color of one randomly chosen position by a random other color. 
+%
+%3. Permutation: With a 0.03 probability,  colors of two random positions are switched. 
+%
+%4. Inversion: With a 0.02 probability, two randomly chosen positions have their sequence of colors between these two positions are inverted. 
+%------------------------------------------------------------------------------------------------------
+%citation: Lotte Berghman, Efficient solutions for Mastermind using genetic algorithms. 
+%------------------------------------------------------------------------------------------------------
+%Modifications to genetic algorithms for speed-up: 
+%- The eligible codes are selected from a population based on the criteria that all the constraints are met which is when the function $C$ above is 0. From there, we need to decide which of the eligible codes will be the next guess. From experimenting, we did not see a major difference in just playing a randomly selected code from the set vs. other strategies such as playing a code that is more similar or different from the other previously played guesses. Therefore, in order to speed up the algorithm, we modified the genetic algorithm to play the first candidate that meets all the criteria rather than completing all 100 generations of populations. 
 
 \section{Experiments}
 
@@ -155,26 +179,100 @@ An alternative approach is described by Bernier et al. \cite{bernier1996solving}
 \end{figure}
 
 \newpage
-\section{Results}
+\section{Results by Optimization Method}
+
+\begin{figure}[h!]
+\centering
+\subfloat[Number of guesses]{\includegraphics[width=3.4in]{img/knuth_guesses}}
+\subfloat[Runtime (seconds)]{\includegraphics[width=3.4in]{img/knuth_runtime}}
+\caption{Knuth's algorithm}
+\label{fig:knuth}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\subfloat[Number of guesses]{\includegraphics[width=3.4in]{img/randomsearch_guesses}}
+\subfloat[Runtime (seconds)]{\includegraphics[width=3.4in]{img/randomsearch_runtime}}
+\caption{Random search / Random sampling from posterior}
+\label{fig:randomsearch}
+\end{figure}
+
+\newpage
+
+\begin{figure}[h!]
+\centering
+\subfloat[Number of guesses]{\includegraphics[width=3.4in]{img/entropyall_guesses}}
+\subfloat[Runtime (seconds)]{\includegraphics[width=3.4in]{img/entropyall_runtime}}
+\caption{Maximizing entropy (all steps)}
+\label{fig:entropyall}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\subfloat[Number of guesses]{\includegraphics[width=3.4in]{img/entropyminusone_guesses}}
+\subfloat[Runtime (seconds)]{\includegraphics[width=3.4in]{img/entropyminusone_runtime}}
+\caption{Maximizing entropy (except first step)}
+\label{fig:entropyminusone}
+\end{figure}
+
+\newpage
+
+\begin{figure}[h!]
+\centering
+\subfloat[Number of guesses]{\includegraphics[width=3.4in]{img/sabernier_guesses}}
+\subfloat[Runtime (seconds)]{\includegraphics[width=3.4in]{img/sabernier_runtime}}
+\caption{Simulated annealing (Bernier objective function)}
+\label{fig:sabernier}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\subfloat[Number of guesses]{\includegraphics[width=3.4in]{img/saentropy_guesses}}
+\subfloat[Runtime (seconds)]{\includegraphics[width=3.4in]{img/saentropy_runtime}}
+\caption{Simulated annealing (entropy objective function)}
+\label{fig:saentropy}
+\end{figure}
+
+\newpage
+
+\begin{figure}[h!]
+\centering
+\subfloat[Number of guesses]{\includegraphics[width=3.4in]{img/gabernier_guesses}}
+\subfloat[Runtime (seconds)]{\includegraphics[width=3.4in]{img/gabernier_runtime}}
+\caption{Genetic algorithms (Bernier objective function)}
+\label{fig:gabernier}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\subfloat[Number of guesses]{\includegraphics[width=3.4in]{img/gaentropy_guesses}}
+\subfloat[Runtime (seconds)]{\includegraphics[width=3.4in]{img/gaentropy_runtime}}
+\caption{Genetic algorithms (entropy objective function)}
+\label{fig:gaentropy}
+\end{figure}
+
+\newpage
+\section{Results by Game Configuration}
 
 \begin{table}[h!]
 \begin{center}
 \begin{tabular}{l c c c c}
 \toprule
-\multirow{2}{*}{\bfseries Optimization Method} 		& \multicolumn{2}{c}{\bfseries Number of Guesses} 		& \multicolumn{2}{c}{\bfseries Runtime (Seconds)}	\\
+\multirow{2}{*}{\bfseries Optimization method} 		& \multicolumn{2}{c}{\bfseries Number of guesses} 		& \multicolumn{2}{c}{\bfseries Runtime (seconds)}	\\
 \cmidrule(lr){2-3}  \cmidrule(lr){4-5}				& $\mu$ & $\sigma$								& $\mu$ & $\sigma$							\\
 \cmidrule(lr){1-5}
-Knuth's Algorithm							& 4.0 & 0.000									& 0.021 & 0.002							\\
-Random Search/Random Sampling				& 3.7 & 0.557									& 0.002 & 0.000							\\
-Maximizing Entropy (All Steps)					& 3.8 & 0.510									& 0.193 & 0.010							\\
-Maximizing Entropy (Except First Step)			& 3.7 & 0.640									& 0.007 & 0.004							\\
-Simulated Annealing (Bernier Objective Function)	& 7.5 & 2.037									& 0.017 & 0.026							\\
-Simulated Annealing (Entropy Objective Function)	& 3.5 & 0.805									& 0.003 & 0.001							\\
-Genetic Algorithms (XX Objective Function)		& &											& &										\\
+Knuth's algorithm							& 4.0 & 0.000									& 0.021 & 0.002							\\
+Random search / Random sampling				& 3.7 & 0.557									& 0.002 & 0.000							\\
+Maximizing entropy (all steps)					& 3.8 & 0.510									& 0.193 & 0.010							\\
+Maximizing entropy (except first step)			& 3.7 & 0.640									& 0.007 & 0.004							\\
+Simulated annealing (Bernier objective function)	& 7.5 & 2.037									& 0.017 & 0.026							\\
+Simulated annealing (entropy objective function)	& 3.5 & 0.805									& 0.003 & 0.001							\\
+Genetic algorithms (Bernier objective function)		& 3.9 & 0.831									& 0.022 &	0.026							\\
+Genetic algorithms (entropy objective function)		& 3.8 & 0.698									& 0.027 & 0.032							\\
 \bottomrule
 \end{tabular}
 \end{center}
-\caption{4 Positions; 4 Possible Digits}
+\caption{4 positions; 4 possible digits}
 \label{fig:compare_4_4}
 \end{table}
 
@@ -182,42 +280,22 @@ Genetic Algorithms (XX Objective Function)		& &											& &										\\
 \begin{center}
 \begin{tabular}{l c c c c}
 \toprule
-\multirow{2}{*}{\bfseries Optimization Method} 		& \multicolumn{2}{c}{\bfseries Number of Guesses} 		& \multicolumn{2}{c}{\bfseries Runtime (Seconds)}	\\
+\multirow{2}{*}{\bfseries Optimization method} 		& \multicolumn{2}{c}{\bfseries Number of guesses} 		& \multicolumn{2}{c}{\bfseries Runtime (seconds)}	\\
 \cmidrule(lr){2-3}  \cmidrule(lr){4-5}				& $\mu$ & $\sigma$								& $\mu$ & $\sigma$							\\
 \cmidrule(lr){1-5}
-Knuth's Algorithm							& 4.0 & 0.000									& 0.264 & 0.006							\\
-Random Search/Random Sampling				& 4.5 & 0.742									& 0.006 & 0.001							\\
-Maximizing Entropy (All Steps)					& 4.0 & 0.497									& 1.147 & 0.035							\\
-Maximizing Entropy (Except First Step)			& 4.0 & 0.894									& 0.042 &	0.017							\\
-Simulated Annealing (Bernier Objective Function)	& 8.0 & 1.359									& 0.042 & 0.129							\\
-Simulated Annealing (Entropy Objective Function)	& 4.7 & 0.781									& 0.007 & 0.001							\\
-Genetic Algorithms (XX Objective Function)		& &											& &										\\
+Knuth's algorithm							& 4.0 & 0.000									& 0.264 & 0.006							\\
+Random search / Random sampling				& 4.5 & 0.742									& 0.006 & 0.001							\\
+Maximizing entropy (all steps)					& 4.0 & 0.497									& 1.147 & 0.035							\\
+Maximizing entropy (except first step)			& 4.0 & 0.894									& 0.042 &	0.017							\\
+Simulated annealing (Bernier objective function)	& 8.0 & 1.359									& 0.042 & 0.129							\\
+Simulated annealing (entropy objective function)	& 4.7 & 0.781									& 0.007 & 0.001							\\
+Genetic algorithms (Bernier objective function)		& 4.0 & 0.837									& 0.160 & 0.289							\\
+Genetic algorithms (entropy objective function)		& 4.5 & 0.740									& 0.273 & 0.442							\\
 \bottomrule
 \end{tabular}
 \end{center}
-\caption{4 Positions; 5 Possible Digits}
+\caption{4 positions; 5 possible digits}
 \label{fig:compare_4_5}
-\end{table}
-
-\begin{table}[h!]
-\begin{center}
-\begin{tabular}{l c c c c}
-\toprule
-\multirow{2}{*}{\bfseries Optimization Method} 		& \multicolumn{2}{c}{\bfseries Number of Guesses} 		& \multicolumn{2}{c}{\bfseries Runtime (Seconds)}	\\
-\cmidrule(lr){2-3}  \cmidrule(lr){4-5}				& $\mu$ & $\sigma$								& $\mu$ & $\sigma$							\\
-\cmidrule(lr){1-5}
-Knuth's Algorithm							& 4.0 & 0.000									& 0.606 & 0.017							\\
-Random Search/Random Sampling				& 4.8 & 0.994									& 0.013 & 0.003							\\
-Maximizing Entropy (All Steps)					& 4.8 & 0.600									& 5.225 & 0.207							\\
-Maximizing Entropy (Except First Step)			& 4.4 & 0.663									& 0.145 & 0.099							\\
-Simulated Annealing (Bernier Objective Function)	& 8.0 & 1.844									& 0.268 & 0.421							\\
-Simulated Annealing (Entropy Objective Function)	& 5.0 & 0.949									& 0.013 & 0.001							\\
-Genetic Algorithms (XX Objective Function)		& &											& &										\\
-\bottomrule
-\end{tabular}
-\end{center}
-\caption{4 Positions; 6 Possible Digits}
-\label{fig:compare_4_6}
 \end{table}
 
 \newpage
@@ -226,41 +304,67 @@ Genetic Algorithms (XX Objective Function)		& &											& &										\\
 \begin{center}
 \begin{tabular}{l c c c c}
 \toprule
-\multirow{2}{*}{\bfseries Optimization Method} 		& \multicolumn{2}{c}{\bfseries Number of Guesses} 		& \multicolumn{2}{c}{\bfseries Runtime (Seconds)}	\\
+\multirow{2}{*}{\bfseries Optimization method} 		& \multicolumn{2}{c}{\bfseries Number of guesses} 		& \multicolumn{2}{c}{\bfseries Runtime (seconds)}	\\
 \cmidrule(lr){2-3}  \cmidrule(lr){4-5}				& $\mu$ & $\sigma$								& $\mu$ & $\sigma$							\\
 \cmidrule(lr){1-5}
-Knuth's Algorithm							& 4.0 & 0.000									& 0.528 & 0.014							\\
-Random Search/Random Sampling				& 5.0 & 1.023									& 0.023 & 0.002							\\
-Maximizing Entropy (All Steps)					& 4.8 & 0.812									& 18.600 & 0.883							\\
-Maximizing Entropy (Except First Step)			& 4.8 & 0.766									& 0.669 & 0.407							\\
-Simulated Annealing (Bernier Objective Function)	& 9.2 & 1.077									& 0.069 & 0.224							\\
-Simulated Annealing (Entropy Objective Function)	& 5.3 & 0.781									& 0.028 & 0.005							\\
-Genetic Algorithms (XX Objective Function)		& &											& &										\\
+Knuth's algorithm							& 4.0 & 0.000									& 0.606 & 0.017							\\
+Random search / Random sampling				& 4.8 & 0.994									& 0.013 & 0.003							\\
+Maximizing entropy (all steps)					& 4.8 & 0.600									& 5.225 & 0.207							\\
+Maximizing entropy (except first step)			& 4.4 & 0.663									& 0.145 & 0.099							\\
+Simulated annealing (Bernier objective function)	& 8.0 & 1.844									& 0.268 & 0.421							\\
+Simulated annealing (entropy objective function)	& 5.0 & 0.949									& 0.013 & 0.001							\\
+Genetic algorithms (Bernier objective function)		& 4.8 & 0.622									& 0.230 & 0.472							\\
+Genetic algorithms (entropy objective function)		& 5.0 & 1.000									& 0.376 & 0.660 							\\
 \bottomrule
 \end{tabular}
 \end{center}
-\caption{4 Positions; 7 Possible Digits}
-\label{fig:compare_4_7}
+\caption{4 positions; 6 possible digits}
+\label{fig:compare_4_6}
 \end{table}
 
 \begin{table}[h!]
 \begin{center}
 \begin{tabular}{l c c c c}
 \toprule
-\multirow{2}{*}{\bfseries Optimization Method} 		& \multicolumn{2}{c}{\bfseries Number of Guesses} 		& \multicolumn{2}{c}{\bfseries Runtime (Seconds)}	\\
+\multirow{2}{*}{\bfseries Optimization method} 		& \multicolumn{2}{c}{\bfseries Number of guesses} 		& \multicolumn{2}{c}{\bfseries Runtime (seconds)}	\\
 \cmidrule(lr){2-3}  \cmidrule(lr){4-5}				& $\mu$ & $\sigma$								& $\mu$ & $\sigma$							\\
 \cmidrule(lr){1-5}
-Knuth's Algorithm							& 6.0 & 0.000									& 4.663 & 0.269							\\
-Random Search/Random Sampling				& 5.4 & 1.114									& 0.044 & 0.005							\\
-Maximizing Entropy (All Steps)					& 5.1 & 0.943									& 53.689 & 1.9444							\\
-Maximizing Entropy (Except First Step)			& 5.4 & 0.735									& 1.464 & 1.162							\\
-Simulated Annealing (Bernier Objective Function)	& 9.1 & 1.578									& 0.290 & 0.478							\\
-Simulated Annealing (Entropy Objective Function)	& 5.5 & 1.023									& 0.043 & 0.005							\\
-Genetic Algorithms (XX Objective Function)		& &											& &										\\
+Knuth's algorithm							& 4.0 & 0.000									& 0.528 & 0.014							\\
+Random search / Random sampling				& 5.0 & 1.023									& 0.023 & 0.002							\\
+Maximizing entropy (all steps)					& 4.8 & 0.812									& 18.600 & 0.883							\\
+Maximizing entropy (except first step)			& 4.8 & 0.766									& 0.669 & 0.407							\\
+Simulated annealing (Bernier objective function)	& 9.2 & 1.077									& 0.069 & 0.224							\\
+Simulated annealing (entropy objective function)	& 5.3 & 0.781									& 0.028 & 0.005							\\
+Genetic algorithms (Bernier objective function)		& 5.0 & 0.707									& 2.432 & 3.576							\\
+Genetic algorithms (entropy objective function)		& 5.5 & 0.742									& 1.384 & 2.043							\\
 \bottomrule
 \end{tabular}
 \end{center}
-\caption{4 Positions; 8 Possible Digits}
+\caption{4 positions; 7 possible digits}
+\label{fig:compare_4_7}
+\end{table}
+
+\newpage
+
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{l c c c c}
+\toprule
+\multirow{2}{*}{\bfseries Optimization method} 		& \multicolumn{2}{c}{\bfseries Number of guesses} 		& \multicolumn{2}{c}{\bfseries Runtime (seconds)}	\\
+\cmidrule(lr){2-3}  \cmidrule(lr){4-5}				& $\mu$ & $\sigma$								& $\mu$ & $\sigma$							\\
+\cmidrule(lr){1-5}
+Knuth's algorithm							& 6.0 & 0.000									& 21.711 & 0.269							\\
+Random search / Random sampling				& 5.4 & 1.114									& 0.044 & 0.005							\\
+Maximizing entropy (all steps)					& 5.1 & 0.943									& 53.689 & 1.944							\\
+Maximizing entropy (except first step)			& 5.4 & 0.735									& 1.464 & 1.162							\\
+Simulated annealing (Bernier objective function)	& 9.1 & 1.578									& 0.290 & 0.478							\\
+Simulated annealing (entropy objective function)	& 5.5 & 1.023									& 0.043 & 0.005							\\
+Genetic algorithms (Bernier objective function)		& 5.3 & 0.954									& 25.809 & 65.751							\\
+Genetic algorithms (entropy objective function)		& 5.5 & 0.973									& 7.866 & 22.396							\\
+\bottomrule
+\end{tabular}
+\end{center}
+\caption{4 positions; 8 possible digits}
 \label{fig:compare_4_8}
 \end{table}
 
@@ -268,20 +372,21 @@ Genetic Algorithms (XX Objective Function)		& &											& &										\\
 \begin{center}
 \begin{tabular}{l c c c c}
 \toprule
-\multirow{2}{*}{\bfseries Optimization Method} 		& \multicolumn{2}{c}{\bfseries Number of Guesses} 		& \multicolumn{2}{c}{\bfseries Runtime (Seconds)}	\\
+\multirow{2}{*}{\bfseries Optimization method} 		& \multicolumn{2}{c}{\bfseries Number of guesses} 		& \multicolumn{2}{c}{\bfseries Runtime (seconds)}	\\
 \cmidrule(lr){2-3}  \cmidrule(lr){4-5}				& $\mu$ & $\sigma$								& $\mu$ & $\sigma$							\\
 \cmidrule(lr){1-5}
-Knuth's Algorithm							& 7.0 & 0.000									& 67.299 & 1.928							\\
-Random Search/Random Sampling				& 5.9 & 0.995									& 0.069 & 0.008							\\
-Maximizing Entropy (All Steps)					& 5.8 & 1.043									& 149.057 & 11.014							\\
-Maximizing Entropy (Except First Step)			& 5.7 & 0.714									& 5.702 & 4.282							\\
-Simulated Annealing (Bernier Objective Function)	& 8.8 & 1.824									& 0.191 & 0.331							\\
-Simulated Annealing (Entropy Objective Function)	& 6.2 & 1.288									& 0.091 & 0.021							\\
-Genetic Algorithms (XX Objective Function)		& &											& &										\\
+Knuth's algorithm							& 6.0 & 0.000									& 67.299 & 1.928							\\
+Random search / Random sampling				& 5.9 & 0.995									& 0.069 & 0.008							\\
+Maximizing entropy (all steps)					& 5.8 & 1.043									& 149.057 & 11.014							\\
+Maximizing entropy (except first step)			& 5.7 & 0.714									& 5.702 & 4.282							\\
+Simulated annealing (Bernier objective function)	& 8.8 & 1.824									& 0.191 & 0.331							\\
+Simulated annealing (entropy objective function)	& 6.2 & 1.288									& 0.091 & 0.021							\\
+Genetic algorithms (Bernier objective function)		& 6.0 & 1.378									& 66.406 & 135.881							\\
+Genetic algorithms (entropy objective function)		& 6.2 & 1.122									& 10.492 & 28.552							\\
 \bottomrule
 \end{tabular}
 \end{center}
-\caption{4 Positions; 9 Possible Digits}
+\caption{4 positions; 9 possible digits}
 \label{fig:compare_4_9}
 \end{table}
 
@@ -291,24 +396,35 @@ Genetic Algorithms (XX Objective Function)		& &											& &										\\
 \begin{center}
 \begin{tabular}{l c c c c}
 \toprule
-\multirow{2}{*}{\bfseries Optimization Method} 		& \multicolumn{2}{c}{\bfseries Number of Guesses} 		& \multicolumn{2}{c}{\bfseries Runtime (Seconds)}	\\
+\multirow{2}{*}{\bfseries Optimization method} 		& \multicolumn{2}{c}{\bfseries Number of guesses} 		& \multicolumn{2}{c}{\bfseries Runtime (seconds)}	\\
 \cmidrule(lr){2-3}  \cmidrule(lr){4-5}				& $\mu$ & $\sigma$								& $\mu$ & $\sigma$							\\
 \cmidrule(lr){1-5}
-Knuth's Algorithm							& 6.0 & 0.000									& 84.160 & 9.606							\\
-Random Search/Random Sampling				& 6.6 & 1.020									& 0.098 & 0.006							\\
-Maximizing Entropy (All Steps)					& 5.8 & 1.062									& 344.603 & 21.921							\\
-Maximizing Entropy (Except First Step)			& 6.0 & 0.775									& 13.557 & 9.339							\\
-Simulated Annealing (Bernier Objective Function)	& 9.4 & 0.970									& 0.248 & 0.513							\\
-Simulated Annealing (Entropy Objective Function)	& 6.0 & 1.304									& 0.127 & 0.009							\\
-Genetic Algorithms (XX Objective Function)		& &											& &										\\
+Knuth's algorithm							& 6.0 & 0.000									& 84.160 & 9.606							\\
+Random search / Random sampling				& 6.6 & 1.020									& 0.098 & 0.006							\\
+Maximizing entropy (all steps)					& 5.8 & 1.062									& 344.603 & 21.921							\\
+Maximizing entropy (except first step)			& 6.0 & 0.775									& 13.557 & 9.339							\\
+Simulated annealing (Bernier objective function)	& 9.4 & 0.970									& 0.248 & 0.513							\\
+Simulated annealing (entropy objective function)	& 6.0 & 1.304									& 0.127 & 0.009							\\
+Genetic algorithms (Bernier objective function)		& 6.5 & 1.466									& 77.632 & 169.038							\\
+Genetic algorithms (entropy objective function)		& 5.9 & 0.831									& 107.604 & 310.685						\\
 \bottomrule
 \end{tabular}
 \end{center}
-\caption{4 Positions; 10 Possible Digits}
+\caption{4 positions; 10 possible digits}
 \label{fig:compare_4_10}
 \end{table}
 
 \newpage
+
+\section{Additional Methods Tested}
+
+\noindent \textcolor{red}{TODO}
+
+\newpage
+
+%For this project we also tried to deploy expectation maximization (EM) to solve for the hidden code. At first sight this may seem very intuitive, since the parameters of the problem?the colors, or numbers, in the hidden code?are unobserved. Treating this like a latent parameter, like on does in expectation-maximization may seem like a good approach to take.
+%Trying to work out the mathematics of a Mastermind expectation maximization strategy yields the following. EM is typically used in problems where the likelihood is hard to evaluate directly. Therefore, we recursively maximize the expectation of the likelihood conditional on the data, until we converge to a set of parameters that is close to the maximum likelihood estimator. In Mastermind, however, the likelihood of the data given a set of parameters is not so hard to evaluate at all. Since the constraint on the problem is that the hidden code should logically allow for the number of black and white pegs appearing given a certain guess, there can be many hidden codes with a likelihood of 1, while the rest will have likelihood 0. For example, if my guess is 1234, and as a response I get back two black pegs, then I know two numbers are right. Any hidden code where two numbers are in the same position and the rest are not, could validly produce this outcome, e.g. the code 1255 or 1664, etcetera. Given that such a code is true, the likelihood that the response was two black pegs is 1, since this is deterministically produced by the rules of the game. Therefore, there will be a split in the solution space between codes that are possible given the responses (likelihood equals 1), and codes that are impossible (likelihood equals 0). EM, in this case, would then converge to some solution in the set of still allowable codes. Since the choice of a new code isn't directed by any possible information gains, this amounts to a random search across the space. If we make an informed decision here, the problem boils down to a strategy where one would maximize the information gain, for instance using entropy or some other metric.
+%In conclusion, EM is probably not a good way to study the Mastermind problem, since the game is underconstrained and deterministic, leading to a space of many equally likely convergent solutions at any given round in the game. It may be more useful in estimating parameters of stochastic processes with a lot of data, rather than in making forward looking decisions where information gain plays a bigger role.
 
 %necessary for non-cited references to show up
 \nocite{runarsson2010adapting}

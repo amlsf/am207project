@@ -293,11 +293,8 @@ class GAsim():
             response = self.game.guess_code(code)
             self._prev_guesses.append((code, response))
 
-        # TODO check sa returning 'accepted iterations' instead of this?
-        return self.game.n_guessed
-
+        return self.game.n_guesseds
 
 if __name__ == "__main__":
     s = GAsim()
-    s.runGA()
-    # same as runGA(cl=4, nc=6, silent=False)
+    s.runGA() # same as runGA(cl=4, nc=6, silent=False)

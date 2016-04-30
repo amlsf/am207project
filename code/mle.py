@@ -16,7 +16,6 @@ from MMboard import MMboard
 import numpy as np
 import itertools
 
-
 # Maximum likelihood estimation
 def maximum_likelihood(n_code, n_colors, code=None, silent=True):
     

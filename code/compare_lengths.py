@@ -1,5 +1,5 @@
 # compare.py
-# v 1.0  27 April 2016 [KL]
+# v 1.0  30 April 2016 [KL]
 
 ######################
 #
@@ -17,9 +17,6 @@
 import numpy as np
 import time
 import matplotlib.pyplot as plt
-
-# main game functions
-# import MMboard as mm
 
 # individual algorithms
 import knuth as kn  # Knuth algorithm
@@ -124,10 +121,10 @@ for c in alphabet_sizes:
         meanrun = np.mean(runtime)
         runerror = np.std(runtime)
 
-        if "Entropy-all" not in results:
-            results["Entropy-all"] = [((c, l), meancnt, meanrun, cnterror, runerror)]
+        if "entropy-all" not in results:
+            results["entropy-all"] = [((c, l), meancnt, meanrun, cnterror, runerror)]
         else:
-            results["Entropy-all"] += [((c, l), meancnt, meanrun, cnterror, runerror)]
+            results["entropy-all"] += [((c, l), meancnt, meanrun, cnterror, runerror)]
         if summary_stats:
             print "avg number of guesses: %.1f (std: %.3f), avg run time: %.3f (std: %.3f)" % (meancnt, cnterror, meanrun, runerror)
         ################
@@ -148,10 +145,10 @@ for c in alphabet_sizes:
         meanrun = np.mean(runtime)
         runerror = np.std(runtime)
 
-        if "Entropy-minusone" not in results:
-            results["Entropy-minusone"] = [((c, l), meancnt, meanrun, cnterror, runerror)]
+        if "entropy-minusone" not in results:
+            results["entropy-minusone"] = [((c, l), meancnt, meanrun, cnterror, runerror)]
         else:
-            results["Entropy-minusone"] += [((c, l), meancnt, meanrun, cnterror, runerror)]
+            results["entropy-minusone"] += [((c, l), meancnt, meanrun, cnterror, runerror)]
         if summary_stats:
             print "avg number of guesses: %.1f (std: %.3f), avg run time: %.3f (std: %.3f)" % (meancnt, cnterror, meanrun, runerror)
         ################
@@ -172,10 +169,10 @@ for c in alphabet_sizes:
         meanrun = np.mean(runtime)
         runerror = np.std(runtime)
 
-        if "SA" not in results:
-            results["SA"] = [((c, l), meancnt, meanrun, cnterror, runerror)]
+        if "SA-bernier" not in results:
+            results["SA-bernier"] = [((c, l), meancnt, meanrun, cnterror, runerror)]
         else:
-            results["SA"] += [((c, l), meancnt, meanrun, cnterror, runerror)]
+            results["SA-bernier"] += [((c, l), meancnt, meanrun, cnterror, runerror)]
         if summary_stats:
             print "avg number of guesses: %.1f (std: %.3f), avg run time: %.3f (std: %.3f)" % (meancnt, cnterror, meanrun, runerror)
         #################
@@ -219,60 +216,52 @@ for c in alphabet_sizes:
         meanrun = np.mean(runtime)
         runerror = np.std(runtime)
 
-        if "Genetic" not in results:
-            results["Genetic"] = [((c, l), meancnt, meanrun, cnterror, runerror)]
+        if "GA-bernier" not in results:
+            results["GA-bernier"] = [((c, l), meancnt, meanrun, cnterror, runerror)]
         else:
-            results["Genetic"] += [((c, l), meancnt, meanrun, cnterror, runerror)]
+            results["GA-bernier"] += [((c, l), meancnt, meanrun, cnterror, runerror)]
         if summary_stats:
             print "avg number of guesses: %.1f (std: %.3f), avg run time: %.3f (std: %.3f)" % (meancnt, cnterror, meanrun, runerror)
         ################
 
-# print results dictionary
+        ################
+        print "\n*** GENETIC ALGORITHMS (ENTROPY OBJECTIVE FUNCTION) ***"
+
+        cnt = np.zeros(nsims)
+        runtime = np.zeros(nsims)
+
+        for i in range(nsims):
+            start = time.time()
+            cnt[i] = e.GAentropy().runGA(cl=l, nc=c, code=secret, silent=silent_mode)
+            runtime[i] = time.time() - start
+        meancnt = np.mean(cnt)
+        cnterror = np.std(cnt)
+        meanrun = np.mean(runtime)
+        runerror = np.std(runtime)
+
+        if "GA-entropy" not in results:
+            results["GA-entropy"] = [((c, l), meancnt, meanrun, cnterror, runerror)]
+        else:
+            results["GA-entropy"] += [((c, l), meancnt, meanrun, cnterror, runerror)]
+        if summary_stats:
+            print "avg number of guesses: %.1f (std: %.3f), avg run time: %.3f (std: %.3f)" % (meancnt, cnterror, meanrun, runerror)
+        ################
+
+##########
+# results
+##########
+
+print "\n----------------------------------------------"
+print "results"
+print "----------------------------------------------"
+
 print results
 
 ##########
 # plots
 ##########
 
-# print "printing plot of number of guesses by character set (code length 4)"
-# plt.figure()
-# plt.title("Number of Guesses (fixed code length 4)")
-# plt.xlabel("characters")
-# plt.ylabel("guesses")
-# plt.xlim(3, 11, 1)
-# plt.ylim(1, 11, 1)
-# for model in results.keys():
-#     # ((c, l), cnt, runtime)
-#     points_x, points_y, err = [], [], []
-#     for point in results[model]:
-#         if point[0][1] == 4:  # fix to standard length
-#             points_x += [point[0][0]]
-#             points_y += [point[1]]
-#             err += [point[3]]
-#     plt.errorbar(points_x, points_y, yerr=err, label=model)
-# plt.legend(loc="best")
-# plt.show()
-#
-# print "printing plot of execution time by character set (code length 4)"
-# plt.figure()
-# plt.title("Execution Time (fixed code length 4)")
-# plt.xlabel("characters")
-# plt.ylabel("execution time (seconds)")
-# plt.xlim(3, 11, 1)
-# for model in results.keys():
-#     # ((c, l), cnt, runtime)
-#     points_x, points_y, err = [], [], []
-#     for point in results[model]:
-#         if point[0][1] == 4:  # fix to standard length
-#             points_x += [point[0][0]]
-#             points_y += [point[2]]
-#             err += [point[4]]
-#     plt.ylim(0, 5)
-#     plt.errorbar(points_x, points_y, yerr=err, label=model)
-# plt.legend(loc="best")
-# plt.show()
-
-print "printing plot of number of guesses by word length (fixed possible digits)"
+print "Printing plot of number of guesses by word length (fixed possible digits)..."
 plt.figure()
 plt.title("Number of Guesses by word length (fixed possible digits)")
 plt.xlabel("word length")
@@ -291,7 +280,7 @@ for model in results.keys():
 plt.legend(loc="best")
 plt.show()
 
-print "printing plot of number of execution time by word length (fixed possible digits)"
+print "Printing plot of number of execution time by word length (fixed possible digits)..."
 plt.figure()
 plt.title("Execution Time by word length (fixed possible digits)")
 plt.xlabel("word length")
