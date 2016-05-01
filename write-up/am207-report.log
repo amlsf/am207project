@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  1 MAY 2016 00:35
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  1 MAY 2016 10:58
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -753,11 +753,11 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 5122 strings out of 493089
- 77674 string characters out of 6134842
- 130868 words of memory out of 5000000
- 8436 multiletter control sequences out of 15000+600000
- 40001 words of font info for 114 fonts, out of 8000000 for 9000
+ 5124 strings out of 493089
+ 77699 string characters out of 6134842
+ 130911 words of memory out of 5000000
+ 8437 multiletter control sequences out of 15000+600000
+ 41066 words of font info for 116 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  43i,10n,47p,1760b,378s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2015/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
@@ -770,7 +770,7 @@ exmf-dist/fonts/type1/public/mathpazo/fplmri.pfb></usr/local/texlive/2015/texmf
 -dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/local/texlive/2015/texmf-dist/f
 onts/type1/urw/palatino/uplr8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/ty
 pe1/urw/palatino/uplri8a.pfb>
-Output written on am207-report.pdf (24 pages, 524808 bytes).
+Output written on am207-report.pdf (24 pages, 524863 bytes).
 PDF statistics:
  189 PDF objects out of 1000 (max. 8388607)
  83 compressed objects within 1 object stream
