@@ -261,7 +261,7 @@ print results
 # plots
 ##########
 
-print "Printing plot of number of guesses by character set (code length 4)..."
+print "printing plot of number of guesses by character set (code length 4)..."
 plt.figure()
 plt.title("Number of Guesses (fixed code length 4)")
 plt.xlabel("characters")
@@ -280,7 +280,7 @@ for model in results.keys():
 plt.legend(loc="best")
 plt.show()
 
-print "Printing plot of execution time by character set (code length 4)..."
+print "printing plot of execution time by character set (code length 4)..."
 plt.figure()
 plt.title("Execution Time (fixed code length 4)")
 plt.xlabel("characters")

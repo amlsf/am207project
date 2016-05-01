@@ -10,7 +10,7 @@
 #
 ######################
 
-# runs entropy solver for MasterMind
+# runs entropy solvers for MasterMind
 
 '''
 Example:

@@ -261,7 +261,7 @@ print results
 # plots
 ##########
 
-print "Printing plot of number of guesses by word length (fixed possible digits)..."
+print "printing plot of number of guesses by word length (fixed possible digits)..."
 plt.figure()
 plt.title("Number of Guesses by word length (fixed possible digits)")
 plt.xlabel("word length")
@@ -280,7 +280,7 @@ for model in results.keys():
 plt.legend(loc="best")
 plt.show()
 
-print "Printing plot of number of execution time by word length (fixed possible digits)..."
+print "printing plot of number of execution time by word length (fixed possible digits)..."
 plt.figure()
 plt.title("Execution Time by word length (fixed possible digits)")
 plt.xlabel("word length")

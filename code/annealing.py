@@ -350,5 +350,4 @@ class SAsim():
 
 if __name__ == "__main__":
     s = SAsim()
-    s.runSA()
-    # same as runSA(cl=4, nc=6, silent=False)
+    s.runSA() # same as runSA(cl=4, nc=6, silent=False)

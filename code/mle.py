@@ -17,14 +17,14 @@ import numpy as np
 import itertools
 
 # Maximum likelihood estimation
-def maximum_likelihood(n_code, n_colors, code=None, silent=True):
+def maximum_likelihood(cl=4, nc=6, code=None, silent=False):
     
         # Get board ready to play
-    board = MMboard(codelength=n_code, numcolors=n_colors, suppress_output=silent)
+    board = MMboard(codelength=cl, numcolors=nc, suppress_output=silent)
     board.set_code() if not code else board.set_code(code)
     
     # Value stores
-    solutions = np.array(list(itertools.product(range(n_colors), repeat=n_code)))
+    solutions = np.array(list(itertools.product(range(nc), repeat=cl)))
     guesses = []
     responses = []
     
@@ -48,7 +48,7 @@ def maximum_likelihood(n_code, n_colors, code=None, silent=True):
         # Make an informed guess from set of solutions with maximum likelihood
         guess = solutions[np.random.randint(0, len(solutions))]
         outcome = board.guess_code(guess)
-        print outcome, response(guess, board._code)
+        # print outcome, response(guess, board._code)
         guesses.append(guess)
         responses.append(outcome)
         
@@ -77,3 +77,6 @@ def maximum_likelihood(n_code, n_colors, code=None, silent=True):
         n_guesses += 1
         
     return n_guesses
+
+if __name__ == "__main__":
+    maximum_likelihood()  # same as random_search(cl=4, nc=6, silent=False)
