@@ -51,7 +51,7 @@ for c in alphabet_sizes:
     for l in length_sizes:
 
         print "\n----------------------------------------------"
-        print "possible digits: %i, number of positions: %i" % (c, l)
+        print "possible colors: %i, number of positions: %i" % (c, l)
         print "----------------------------------------------"
 
         # generate random code for use in all algorithms

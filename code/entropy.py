@@ -335,7 +335,7 @@ class SAentropy():
             if prob > 0: # assumes log(0) = 0
                 entropy -= prob * np.log2(prob)
 
-        return entropy
+        return -entropy # SA is minimizing
 
     def _change_guess(self, guess, repeats=5):
         '''
@@ -671,8 +671,8 @@ class GAentropy():
             # sort population based on fitness in ascending order
             # pop_score = sorted(pop_score, key=lambda x: x[0])
 
-            # Pick ones where score is 0
-            eligibles = [e for (score, e) in pop_score if score>=0]
+            # Pick ones where score is >0
+            eligibles = [e for (score, e) in pop_score if score>0]
 
             # no good ones, move on to next generation to try again
             if len(eligibles) == 0:

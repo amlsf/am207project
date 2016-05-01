@@ -5,14 +5,14 @@
 \usepackage{booktabs}
 \usepackage{multirow}
 
-\title{AM207 Final Project: \\ Exploring Optimization Strategies for \textit{Mastermind}}
+\title{Exploring Optimization Strategies for \textit{Mastermind}}
 \author{Gioia Domined\`o \and Amy Lee \and Kendrick Lo \and Reinier Maat}
 
 \begin{document}
 \maketitle{}
 
 \begin{abstract}
-\textcolor{red}{Insert abstract text.}
+\noindent We implement variations on five iterative ``code-breaking" optimization methods for solving the classic game \textit{Mastermind}. We test our techniques on 14 different game board configurations of varying complexity and report empirical performance in terms of the average number of guesses required to win the game, and the average computational time for playing all turns of the game. We find that global optimization methods are able to consistently win the game in a small number of moves but require excessive runtimes for even moderately complex game board configurations. Local optimization methods require more moves to win the game, but are able to approximate ``real time" game playing even on the more complex game boards.
 \end{abstract}
 
 \pagestyle{plain}
@@ -20,13 +20,13 @@
 
 \section{Introduction}
 
-The game Mastermind was invented in 1970 by Mordecai Meirowitz, and is similar to an earlier game called Bulls and Cows. There are many variations of the game\footnote{https://en.wikipedia.org/wiki/Mastermind\_(board\_game)\#Variations}, but they all follow a broadly consistent format. The game involves two players: a code-maker and a code-breaker. The code-maker selects a sequence of length L (usually 4), where each element in the sequence is chosen with replacement from one of C colors (usually 6). At each turn, the code-breaker guesses a sequence and receives feedback in the form of black pegs and white pegs, where the black pegs denote the number of correct guesses in the right position, and the white pegs denote the number of correct guesses in the wrong position. Based on this information, the code-breaker refines her guesses and attempts to crack the code within the maximum number of guesses (usually 10).
+The game \textit{Mastermind} was invented in 1970 by Mordecai Meirowitz, and is similar to an earlier game called Bulls and Cows. There are many variations of the game, but they all follow a broadly consistent format. The game involves two players: a code-maker and a code-breaker. The code-maker selects a sequence of length L (usually 4), where each element in the sequence is chosen with replacement from one of C colors (usually 6). At each turn, the code-breaker guesses a sequence and receives feedback in the form of black pegs and white pegs, where the black pegs denote the number of correct guesses in the right position, and the white pegs denote the number of correct guesses in the wrong position. Based on this information, the code-breaker refines her guesses and attempts to crack the code within the maximum number of guesses (usually 10).
 
-For our project, we set out to implement various strategies and algorithms for iteratively optimizing the code-breaker's guess at each turn. We compared the performance of these strategies based on the mean and standard deviation of the required number of guesses to win and the runtime across 20 random game initializations. In order to assess the extent to which the different solutions scale efficiently, we tested seven game setups of varying complexity.
+For our project, we set out to implement various strategies and algorithms for iteratively optimizing the code-breaker's guess at each turn. We compared the performance of these strategies based on the mean and standard deviation of the required number of guesses to win and the runtime across 20 random game initializations. In order to assess the extent to which the different solutions scale efficiently, we tested 14 game board configurations of varying complexity.
 
 \begin{figure}[!htbp]
 \centering
-\includegraphics[width=0.7\textwidth]{img/game_setup}
+\includegraphics[width=0.59\textwidth]{img/game_setup}
 \caption{Mastermind Framework}
 \label{fig:game_setup}
 \end{figure}
@@ -35,41 +35,25 @@ For our project, we set out to implement various strategies and algorithms for i
 
 \section{Optimization Methods}
 
-It is helpful at this stage to introduce some mathematical notation to describe the game, which we will use consistently when describing the various methods that we tested. For simplicity, we use one-indexing in the formulas below; however, we note that the Python code for the game interface that we built is zero-indexed. \medskip
+We began the project by developing a Python implementation of \textit{Mastermind}, which we used to test multiple code-breaking optimization methods on boards of varying complexity. Before describing the methods, it is helpful to frame the game in some mathematical notation, which we will also use in the descriptions of the methods below. For simplicity, we use one-indexing in all formulas; however, we note that the Python code for the game interface is zero-indexed.
 
-\noindent We define:
-\begin{itemize}
-\item set of possible colors: $C = \{1, ..., C\}$
-\item set of positions in the code: $L = \{1, ..., L\}$
-\item hidden code: $H_i \ \forall i \in L$
-\item guess of the hidden code: $T_i \ \forall i \in L$
-\item indicator function $\mathbb{1}_{A=B}$, which equals 1 if A=B and equals 0 otherwise
-\end{itemize}
-
-\noindent Using the above notation, we can denote the responses at each turn as follows:
-
-\begin{itemize}
-\item correct guesses in the right position: $B = \sum_{i=1}^L \mathbb{1}_{T_i=H_i} \ \forall i \in L$
-\item correct guesses in the wrong position: $W = \sum_{i=1}^{C} \min(\sum_{j=1}^{L}\mathbb{1}_{H_j=i, G_i}, \sum_{j=1}^{L}\mathbb{1}_{T_j=i, G_i}) - B$
-\end{itemize}
+We define the set of colors as $CC = \{1, ..., C\}$, and the set of code positions as $LL = \{1, ..., L\}$. Each item of the $L$-length code is denoted as  $H_i$, and each item of a given $L$-length guess is denoted as $T_i$. For convenience, we also define the indicator function $\mathbb{1}_{A=B}$, which equals $1$ if $A=B$ and $0$ otherwise. Using this notation, we can denote the response tuple at each turn as $(B, W)$, where $B$ and $W$ represent the number of correct guesses in the right position, and the number of correct guesses in the wrong position, respectively. We calculate these as $B= \sum_{i=1}^L \mathbb{1}_{T_i=H_i} \ \forall i \in L$ and $W = \sum_{i=1}^{C} \min(\sum_{j=1}^{L}\mathbb{1}_{H_j=i, G_i}, \sum_{j=1}^{L}\mathbb{1}_{T_j=i, G_i}) - B$.
 
 \subsection{Knuth's Five-Guess Algorithm}
 
-The most commonly referenced optimization technique in the Mastermind literature is Knuth's five-guess algorithm \cite{knuth76} \textendash \ sometimes also referred to as the ``worst-case strategy" \textendash \ which can always solve the classic game configuration in five moves or less. This strategy always begins with the same initial guess of 1122 (or 0011, when zero-indexed); this choice is motivated by examples of other initial guesses that do not always lead to a solution in five moves. Our implementation uses this deterministic initial guess for the classic game configuration, but uses a random initial guess for all other configurations as analogous ``best" starting points are not defined in the literature.
+The most commonly referenced optimization technique in the \textit{Mastermind} literature is Knuth's five-guess algorithm \cite{knuth76} \textendash \ sometimes also referred to as the ``worst-case strategy" \textendash \ which can always solve the classic game configuration in five moves or less. This strategy always begins with the same initial guess of 1122 (or 0011, when zero-indexed); this choice is motivated by examples of other initial guesses that do not always lead to a solution in five moves. Our implementation uses this deterministic initial guess for the classic game configuration, but uses a random initial guess for all other configurations, as analogous ``best" starting points are not defined in the literature.
 
-After the initial guess, the algorithm determines the minimum number of codes that each guess would eliminate from the list of possibilities, and chooses one of the guesses that maximizes this number\footnote{Wikipedia refers to this as the minimax \textit{technique}. We note that this one-off maximization differs from the recursive minimax \textit{algorithm} that is also used in game theory.}. At each stage of the game, the set of possible codes is updated to only include codes that would have generated the same responses at each of the previous steps. This ensures that the state space shrinks with each subsequent guess.
+After the initial guess, the algorithm determines the minimum number of codes that each guess would eliminate from the list of possibilities, and chooses one of the guesses that maximizes this number\footnote{Wikipedia refers to this as the minimax \textit{technique}. We note that this one-off maximization differs from the recursive minimax \textit{algorithm} that is also used in game theory.}. At each stage of the game, the set of possible codes is updated to only include codes that would have generated the same responses at all of the previous steps. This ensures that the state space of possible guesses shrinks at each turn.
 
 \subsection{Random Search with Constraints / Random Sampling From Posterior}
 
-This method is described in the Mastermind literature both as a constrained random search algorithm \cite{bernier1996solving} and in terms of posterior distribution updates \cite{vomlel2004bayesian}. We follow the latter approach below.
-
-We start by defining the joint probability distribution over all possible code sequences as $P(H_1, ..., H_L)$. As we have no information, our prior is uniformly distributed.
+This method is described in the \textit{Mastermind} literature both as a constrained random search algorithm \cite{bernier1996solving} and in terms of posterior distribution updates \cite{vomlel2004bayesian}. We follow the latter approach, and start by defining the joint probability distribution over all possible code sequences as $P(H_1, ..., H_L)$. As we have no information, our prior is uniformly distributed.
 
 \[
 P(H_1=h_1, ..., H_L=h_l) = \frac{1}{C^L} ,\quad \text{for all combinations of }(h_1, ..., h_l)
 \]
 
-\noindent We can denote the evidence that obtain at each step as $e = (B, W)$, where B and W are defined as above, and use this to update the posterior joint distribution over code sequences as follows:
+\noindent We can denote the evidence that is obtained at each step as $e = (B, W)$, where B and W are defined as above, and use this to update the posterior joint distribution over code sequences as follows:
 
 \[
     P(H_1=h_1, ..., H_L=h_l | e) = 
@@ -97,7 +81,7 @@ We can use this framework to define the posterior updates at each round of the g
 
 \subsection{Maximizing Shannon Entropy}
 
-Entropy is a measure that is commonly used in information theory to quantify the average amount of information that is contained in a message. In the context of Mastermind, the ``message" is the response of black and white pins that is returned by the code-maker at each turn. The goal of the code-breaker is to choose guesses that create as even a distribution as possible between the various responses\footnote{http://www.geometer.org/mathcircles/mastermind.pdf}, as it will allow her to discard more possible codes at the next step.
+Entropy is a measure that is commonly used in information theory to quantify the average amount of information that is contained in a message. In the context of \textit{Mastermind}, the ``message" is the response of black and white pins that is returned by the code-maker at each turn. The goal of the code-breaker is to choose guesses that create as even a distribution as possible between the various responses\footnote{http://www.geometer.org/mathcircles/mastermind.pdf}, as it will allow her to discard more possible codes at the next step.
 
 Let us denote $r_i$ as the $i$th response category and R as the number of possible responses\footnote{For example, the classic version of the game with codes of length $4$ has 14 possible responses: $(4, 0), (3, 0), (2, 2), (2, 1), (2, 0), (1, 3), (1, 2), (1, 1), (1, 0), (0, 4), (0, 3), (0, 2), (0, 1), (0, 0)$.}. We can then define the entropy of the discrete response space $\{r_1, ... , r_R\}$ for a given guess as:
 
@@ -109,68 +93,56 @@ H(\text{guess} | \text{possible codes}) = \sum_{i=1}^R P(r_i) I(r_i) = - \sum_{i
 
 Practically, we calculate the probability of each response category for a given guess by counting (and normalizing) the total number of possible responses in each category, given the hidden codes that are still possible at that particular stage in the game. The value will depend on the shape of the probability distribution across the response categories, with the minimum entropy of $0$ only achievable when there is certainty of a particular outcome (i.e. $log_2(1)=0$).
 
-In order to improve her performance, the code-breaker will want to pick the guess that results in the highest entropy \textendash \ or, if there are ties, one of the best guesses \textendash \ in order to be able to discard more possible codes at the next step. This can be achieved through an exhaustive calculation of the entropy of all possible guesses at each stage or, for larger state spaces, through a local search technique such as simulated annealing or genetic algorithms.  Figure \ref{fig:entropy} illustrates how the distribution of entropy for the remaining possible guesses can change as the game progresses; this technique is particularly effective where there is a clear maximum value (e.g. at the third guess).
+In order to improve her performance, the code-breaker will want to pick the guess that results in the highest entropy \textendash \ or, if there are ties, one of the best guesses \textendash \ in order to be able to discard as many codes as possible at the next step. This can be achieved through an exhaustive calculation of the entropy of all possible guesses at each stage or, for larger state spaces, through local search techniques such as simulated annealing or genetic algorithms.  Figure \ref{fig:entropy} illustrates how the distribution of entropy for the remaining possible guesses can change as the game progresses; this technique is particularly effective where there is a clear maximum value (e.g. at the third guess, in the particular game shown in the Figure).
+
+\newpage
 
 \subsection{Simulated Annealing}
 
-Knuth's algorithm and maximizing shannon entropy are both examples of global optimization techniques. These approaches work well when optimizing across relatively small state spaces, but  are not guaranteed to scale well as the problem size increases. For example, maximizing shannon entropy has complexity $O(|s(e_i^2)|)$ at the $i$th round of the game, i.e. the runtime scales quadratically with the number of possible codes. More generally, we can use the starting number of possible codes ($C^L$) as an indicator of the complexity of the puzzle \textendash \ when this number becomes very large, approaches that allow us to approximate ``good" guesses without an exhaustive search through all possible codes become increasingly valuable.
+Simulated annealing (SA) is a local optimization method that can be a powerful tool in larger state spaces\footnote{The classical SA formulation involves the minimization of a cost function. Potential solutions are proposed iteratively, and their cost is compared to that of previously accepted solutions. Solutions with lower cost are automatically accepted, while solutions with greater cost are accepted with a certain probability. This probability decreases as the ``temperature" model parameter decreases, and varies inversely with the difference between the cost of the previously accepted solution and the cost of the newly proposed solution. In practice, SA can also be used to maximize objective functions, in addition to strictly minimizing cost functions.}. The effectiveness of this technique depends upon the objective function that is used to evaluate potential guesses, and the method that is used to propose potential new guesses. As mentioned above, one application of simulated annealing is as an alternative to the global maximization of entropy across all possible guesses. In this framework, new guesses are proposed by randomly picking from the set of remaining possible guesses, and are evaluated by calculating their entropy.
 
-Simulated annealing (SA) is one example of a local optimization method that can be effective in larger state spaces\footnote{The classical SA formulation involves the minimization of a cost function. Potential solutions are proposed iteratively, and their cost is compared to that of previously accepted solutions. Solutions with lower cost are automatically accepted, while solutions with greater cost are accepted with a certain probability. This probability decreases as the ``temperature" model parameter decreases, and varies inversely with the difference between the cost of the previously accepted solution and the cost of the newly proposed solution. In practice, SA can also be used to maximize objective functions, in addition to strictly minimizing cost functions.}. The effectiveness of this technique depends upon the objective function that is used to evaluate potential guesses, and the method that is used to propose potential new guesses. As mentioned above, one application of simulated annealing is as an alternative to the global maximization of entropy across all possible guesses. In this framework, new guesses are proposed by randomly picking from the set of remaining possible guesses, and are evaluated by calculating their entropy.
+We also implemented an alternative SA approach that was developed by Bernier et al. \cite{bernier1996solving}. Under this framework, new guesses are generated by introducing \textit{permutations} (swaps of code element pairs) and/or \textit{mutations} (changes to individual code elements) to the last code that was considered. The number of permutations and mutations is determined by the SA ``temperature": the code can change significantly when the temperature is high, encouraging wide exploration of the state space, but will only change slightly when the temperature is lower (by which point the code-breaker hopes to be close to the correct code), encouraging convergence to a ``good" solution.
 
-An alternative SA approach is described by Bernier et al. \cite{bernier1996solving}. Under this framework, new guesses are generated by introducing \textit{permutations} (swaps of code element pairs) and/or \textit{mutations} (changes to individual code elements) to the last code that was considered. The exact number of permutations and mutations is determined by the SA ``temperature'": the code can change significantly when the temperature is high, encouraging exploration of the state of potential next guesses, but will only change slightly when the temperature is lower (by which point we hope to be close to guessing the correct code), encouraging convergence to a ``good" solution.
-
-In order to determine whether the proposed code is ``better" than the current code, Bernier et al. define an objective function based on the difference between the black and white pegs obtained from all previous guesses and the number of black and white pegs that would have been obtained if the newly proposed guess were the right code. The function is defined as
+In order to determine whether the proposed code is ``better" than the current code, we use an objective function based on the difference between the black and white pegs obtained from all previous guesses and the number of black and white pegs that would have been obtained if the newly proposed guess were the right code. The cost function is defined as:
 
 \[
-\sum_{i=1}^n abs(\Delta n_w^i) + abs(\Delta n_w^i + \Delta n_b^i)
+\sum_{i=1}^n | \Delta n_w^i | + | \Delta n_w^i + \Delta n_b^i |
 \]
 
-\noindent where $n$ is the number of previous guesses made and $\Delta n_w^i $ and $\Delta n_b^i$ are the differences in white and black peg response when comparing the response that would be obtained if the proposed code were correct with the response it actually received when it had actually made the guess. 
-%
-%Intuitively, if ALL previous constraints (the black and white peg responses) are satisfied when our proposed guess is assumed to be the correct code, we will accept the proposal and formally enter the proposed guess since it may well be the correct answer. If most, but not all, of the previous constraints are satisfied, we know that we cannot possibly have a correct solution; nevertheless, we still accept the proposal with a certain probability and enter the proposed guess, with the hope of at least edging closer to an optimal solution. In this manner, we can usually approach a close-to-optimal solution relatively quickly, since the evaluation of each proposal requires considering only the previous guesses rather than the entire set of unguessed codes (the latter feature is common among all of the alternative methods discussed in this paper). 
+\noindent where $n$ is the number of previous guesses made and $\Delta n_w^i $ and $\Delta n_b^i$ are the differences in white and black peg responses, respectively. If the cost function evaluates to zero (i.e. the proposed guess is consistent with all the responses received until that point in the game), then the proposal is accepted as it may be the correct answer. If, instead, the proposed guess is only consistent with some of the previous responses, then it is accepted with a certain probability; while it cannot possibly be the correct solution, it may nonetheless lead the code-breaker closer to the correct solution. In this manner, SA can approach a close-to-optimal solution relatively quickly, as each evaluation of the cost function only requires a comparison to previous guesses, as opposed to the entire state space of possible guesses.
 
 \subsection{Genetic Algorithms}
 
-\noindent \textcolor{red}{TODO}
+Another local optimization method is genetic algorithms (GA), which draws inspiration from natural evolution to solve optimization problems. In the context of \textit{Mastermind}, we created a population of 60 candidate guesses and evolved them toward better solutions over the course of 100 ``generations". The most eligible guesses were selected at each generation based on their ``fitness" function: we tested the same Bernier and entropy objective functions that we used for SA.
 
-%Both simulated annealing and genetic algorithms used the same cost function, where each combination is compared with all the previously played guesses. It is defined as:  
-%$$C = \sum_{i=1}^n abs (\Delta n_W^i)  + abs(\Delta n_B^i + \Delta n_W^i )$$ 
-%where $n$ is the number of guesses played and $\Delta n$ are the white and black peg differences between the target combination and the guess $i$. The number of different white and black pegs are computed and added to the cost such that the cost increases with the number of unsatisfied rules. In this manner, the constraints are added in a changing environment. 
-%------------------------------------------------------------------------------------------------------
-%Genetic algorithms are a type of evolutionary algorithm which generate solutions to optimization problems inspired by natural evolution. We create a population of 60 candidate solutions that we evolve towards better solutions in subsequent populations by selecting the most eligible combinations from previous generations, for a total 100 generations. In order to maintain diversity to efficiently explore the changing landscape, we apply four different types of alterations for each candidate solution: 
-%
-%1. Crossover: Given a two codes, each index in the first code has a 0.5 probability of being crossed with the corresponding index in the second code. 
-%
-%2. Mutation: With a 0.03 probability, crossover is followed by a mutation that replaces the color of one randomly chosen position by a random other color. 
-%
-%3. Permutation: With a 0.03 probability,  colors of two random positions are switched. 
-%
-%4. Inversion: With a 0.02 probability, two randomly chosen positions have their sequence of colors between these two positions are inverted. 
-%------------------------------------------------------------------------------------------------------
-%citation: Lotte Berghman, Efficient solutions for Mastermind using genetic algorithms. 
-%------------------------------------------------------------------------------------------------------
+\newpage
 
+In order to maintain diversity as across generations and efficiently explore the state space, we applied four types of alterations: \textit{crossovers between two codes}, where each position in the first code has a 0.5 probability of being crossed with the corresponding position in the second code; \textit{mutations}, where the color of a randomly chosen position is replaced by a random other color with 0.03 probability; \textit{permutations}, where the colors of two random positions have a 0.03 probability of being switched; and \textit{inversions}, where the sequence of colors between two randomly chosen positions are inverted with a 0.02 probability.
 
 \section{Experiments}
 
-\noindent \textcolor{red}{TODO}
+We used two different setups to test our optimization methods: we varied the number of possible colors ($C$) between $4-10$, while maintaining the code length constant at $4$; and we varied the number of positions ($L$) between $4-10$, while keeping the number of colors constant at $2$. We played the game $20$ times with each configuration and each code-breaking optimization method, and measured the average number of guesses and runtime. Detailed results are presented graphically and in tabular form in Appendices \ref{graphical_results} and \ref{tabular_results}, and the entire code base is available online\footnote{https://github.com/dominedo/am207project}.
 
-%variations on entropy - exclude first guess
+\paragraph{Global optimization.} The optimization methods that rely on an exhaustive search over all possible guesses performed very well in terms of actual game performance, and were able to consistently guess the right code with few moves, even in the more complex game setups. However, this came at the expense of significant runtimes; in fact, we had to redefine our planned experiments as these methods require several hours per guess on complex game board configurations!
 
+Faced with these initial results, we experimented with variations in our implementations \textendash \ which were initially based on the classical formulations from the \textit{Mastermind} literature \textendash \, in order to reduce runtimes while still maintaining strong game performance. For example, while testing the performance of our entropy maximization technique, we noticed that there was very little variation in entropy across possible guesses at the first step of the game, meaning that we were wasting significant computational effort of $O((C^L)^2)$ for what amounted to little better than a random guess. By modifying the algorithm to use a random guess at the first step and only maximize entropy at the successive steps, we were able to significantly reduce the average runtime (from 5.23 to 0.15 seconds, in the classic game configuration) without noticeable changes in overall game performance. Unfortunately, we were not able to find analogous optimizations for Knuth's algorithm or random search with constraints.
 
-%- note that especially as the state size gets large, we can still get decent results (although not necessarily the correct answer) with simulated annealing. The advantage of SA (using the Bernier objective method) was particularly noticeable when we fixed the number of colors and extended the code length: even at a small number of colors (e.g. 3), the time to evaluate algorithms other than this SA method grew exponentially, and evaluating guesses using these other algorithms quickly became impractical.
+\paragraph{Local optimization.} Both SA and GA excelled at playing the more complex game board configurations.  In particular, we found that SA ran very quickly for larger values of both $C$ and $L$. This is a direct consequence of the fact that the algorithm plays the first guess that is accepted (e.g. under the Bernier method, either because it has a cost function of zero, or because it was randomly accepted as part of the algorithm's ``exploration"), instead of looping through all possible guesses. Our analysis showed that SA generally required more guesses than the other methods to arrive at the correct code using the Bernier objective function; however, after replacing the objective function with an entropy-based one, SA achieved a similar average number of guesses while still maintaining its fast (and scalable) runtime.
 
-%Modifications to genetic algorithms for speed-up: 
-%- The eligible codes are selected from a population based on the criteria that all the constraints are met which is when the function $C$ above is 0. From there, we need to decide which of the eligible codes will be the next guess. From experimenting, we did not see a major difference in just playing a randomly selected code from the set vs. other strategies such as playing a code that is more similar or different from the other previously played guesses. Therefore, in order to speed up the algorithm, we modified the genetic algorithm to play the first candidate that meets all the criteria rather than completing all 100 generations of populations. 
+\newpage
+
+We also found GA to be a valuable option for larger values of $L$, though it suffered from longer runtimes for larger values of $C$. This is due to the manner in which the number of possible guesses increases as a function of $L$ and $C$\footnote{For example, suppose that we started with $C=2$ and $L=4$, which equates to $C^L=2^4=16$ possible guesses. Increasing $L$ to $5$ results in $2^5=32$ possible guesses, while increasing $C$ to $3$ results in $3^4=81$ possible guesses.}, which, in turn, affects the number of generations that are required to find a suitable candidate. To optimize its runtime under all game board configurations, we modified the algorithm to play the first candidate that meets all of its criteria, instead of completing all $100$ generations and then choosing the ``best" candidate. This significantly improved runtime without materially affecting the number of guesses required to win.
+
+We also tested an alternative implementation where we replaced the Bernier objective function with an entropy-based objective function. This modification was less successful with GA than it had been with SA, as the overhead associated with calculating each guess's entropy across multiple generations yielded a significant increase in runtime without any improvement in the average number of guesses.
+
+\paragraph{Other methods.} In addition to the optimization methods described above, we also attempted to implement an expectation maximization (EM) based solution. This approach initially seemed very intuitive, as the colors of the hidden code are unobserved and can be treated as latent variables. Using this framework, our goal was to formulate (and maximize) the likelihood as a function of the latent variables and the observed responses from the code-maker. However, the setup of the game is such that there are only two possible evaluations of the likelihood function at each step: either a code is not possible, given the previous responses, or it is possible \textendash \ there is no additional information that might make a particular code more likely than another one. This reduces the solution to the random search technique that we described above; on this basis, we concluded that EM is not a viable approach for solving \textit{Mastermind}.
 
 \section{Conclusion}
 
-\noindent \textcolor{red}{TODO}
+The methods that we implemented can be split into two categories: global optimization techniques (Knuth's algorithm, random search with constraints, maximizing entropy) and local optimization techniques (simulated annealing and genetic algorithms).  We found that global optimization methods were able to consistently win the game in a small number of moves, but required excessive runtimes for even moderately complex game board configurations. On the other hand, local optimization methods required more moves to win the game, but were in most cases able to approximate ``real time" game playing even on the more complex game boards.
 
-%
-%We noted earlier that with simulated annealing using a simple objective function that only depended on previous guesses, a close-to-optimal solution can be attained relatively quickly, even as the set of unguessed codes became large.  Each proposal only requires a comparison with each of the previous guesses, which can be orders of magnitude smaller than that of the set of unguessed codes.  Although most of the other algorithms will outperform SA if the goal is to obtain the correct code and the game time is unrestricted (our analysis showed that SA will generally require more guesses to arrive at the correct code), when the state size is so large that a repeated search through all unguessed codes is not feasible, the SA model will, to its advantage, typically be able to arrive at an acceptable "close" solution within a short period of time.
 
-%Gagneur & co - applications to selective phenotyping
+Generally speaking, we found that there is a trade-off between the average number of moves required to win the game and the average computational time for playing all turns of the game. This trade-off becomes increasingly relevant as the puzzles became more complex, where complexity is quantified in terms of the number of possible codes at the outset of the game ($C^L$). As this value grows, approaches that allow us to approximate ``good" guesses without an exhaustive search through all possible codes become increasingly valuable.
 
 \newpage
 \appendix
@@ -192,7 +164,7 @@ In order to determine whether the proposed code is ``better" than the current co
 \end{figure}
 
 \newpage
-\section{Results by Optimization Method}
+\section{Results by Optimization Method}\label{graphical_results}
 
 \subsection*{Game configuration: 4 positions, varying number of possible colors}
 
@@ -208,7 +180,7 @@ In order to determine whether the proposed code is ``better" than the current co
 \centering
 \subfloat[Number of guesses]{\includegraphics[width=3.4in]{img/randomsearch_guesses}}
 \subfloat[Runtime (seconds)]{\includegraphics[width=3.4in]{img/randomsearch_runtime}}
-\caption{Random search / Random sampling from posterior}
+\caption{Random search with constraints / Random sampling from posterior}
 \label{fig:randomsearch}
 \end{figure}
 
@@ -274,15 +246,15 @@ In order to determine whether the proposed code is ``better" than the current co
 \centering
 \subfloat[Number of guesses]{\includegraphics[width=3.4in]{img/knuth_guesses2}}
 \subfloat[Runtime (seconds)]{\includegraphics[width=3.4in]{img/knuth_runtime2}}
-\caption{Knuth's algorithm2}
-\label{fig:knuth}
+\caption{Knuth's algorithm}
+\label{fig:knuth2}
 \end{figure}
 
 \begin{figure}[h!]
 \centering
 \subfloat[Number of guesses]{\includegraphics[width=3.4in]{img/randomsearch_guesses2}}
 \subfloat[Runtime (seconds)]{\includegraphics[width=3.4in]{img/randomsearch_runtime2}}
-\caption{Random search / Random sampling from posterior}
+\caption{Random search with constraints / Random sampling from posterior}
 \label{fig:randomsearch2}
 \end{figure}
 
@@ -341,7 +313,7 @@ In order to determine whether the proposed code is ``better" than the current co
 \end{figure}
 
 \newpage
-\section{Results by Game Configuration}
+\section{Results by Game Configuration}\label{tabular_results}
 
 \subsection*{Game configuration: 4 positions, varying number of possible colors}
 
@@ -670,18 +642,6 @@ Genetic algorithms (entropy objective function)		& 5.2 & 1.260									& 0.080 &
 \end{table}
 
 \newpage
-
-\section{Additional Methods Tested}
-
-\noindent \textcolor{red}{TODO}
-
-\newpage
-
-
-
-%For this project we also tried to deploy expectation maximization (EM) to solve for the hidden code. At first sight this may seem very intuitive, since the parameters of the problem?the colors, or numbers, in the hidden code?are unobserved. Treating this like a latent parameter, like on does in expectation-maximization may seem like a good approach to take.
-%Trying to work out the mathematics of a Mastermind expectation maximization strategy yields the following. EM is typically used in problems where the likelihood is hard to evaluate directly. Therefore, we recursively maximize the expectation of the likelihood conditional on the data, until we converge to a set of parameters that is close to the maximum likelihood estimator. In Mastermind, however, the likelihood of the data given a set of parameters is not so hard to evaluate at all. Since the constraint on the problem is that the hidden code should logically allow for the number of black and white pegs appearing given a certain guess, there can be many hidden codes with a likelihood of 1, while the rest will have likelihood 0. For example, if my guess is 1234, and as a response I get back two black pegs, then I know two numbers are right. Any hidden code where two numbers are in the same position and the rest are not, could validly produce this outcome, e.g. the code 1255 or 1664, etcetera. Given that such a code is true, the likelihood that the response was two black pegs is 1, since this is deterministically produced by the rules of the game. Therefore, there will be a split in the solution space between codes that are possible given the responses (likelihood equals 1), and codes that are impossible (likelihood equals 0). EM, in this case, would then converge to some solution in the set of still allowable codes. Since the choice of a new code isn't directed by any possible information gains, this amounts to a random search across the space. If we make an informed decision here, the problem boils down to a strategy where one would maximize the information gain, for instance using entropy or some other metric.
-%In conclusion, EM is probably not a good way to study the Mastermind problem, since the game is underconstrained and deterministic, leading to a space of many equally likely convergent solutions at any given round in the game. It may be more useful in estimating parameters of stochastic processes with a lot of data, rather than in making forward looking decisions where information gain plays a bigger role.
 
 %necessary for non-cited references to show up
 \nocite{runarsson2010adapting}
