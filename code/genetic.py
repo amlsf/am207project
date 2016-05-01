@@ -293,7 +293,7 @@ class GAsim():
             response = self.game.guess_code(code)
             self._prev_guesses.append((code, response))
 
-        return self.game.n_guesseds
+        return self.game.n_guessed
 
 if __name__ == "__main__":
     s = GAsim()

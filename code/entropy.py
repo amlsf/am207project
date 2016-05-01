@@ -545,7 +545,7 @@ class SAentropy():
         # terminates.
         # If maximum number of tries reached, the algorithm terminates.
         if ((response is not None) and response[0] == cl) or self._sa.gameover:
-            return (sa_guess, response, 1)
+            return 1
 
         # Otherwise, cache the response
         self._prev_guesses[''.join(map(str, sa_guess))] = response

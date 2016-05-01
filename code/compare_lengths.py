@@ -30,7 +30,7 @@ import genetic as ga
 np.seterr(divide='ignore')
 
 # variable alphabet sizes (cardinality)
-alphabet_sizes = [3] # [4, 5, 6, 7, 8, 9, 10]  # [4, 6, 8, 10]
+alphabet_sizes = [2] # [4, 5, 6, 7, 8, 9, 10]  # [4, 6, 8, 10]
 
 # code length size (anything bigger than 6 can take very long to run)
 length_sizes = [4, 5, 6, 7, 8, 9, 10]

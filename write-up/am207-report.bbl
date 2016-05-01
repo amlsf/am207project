@@ -1,4 +1,9 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
+
+\bibitem{berghman2009efficient}
+Lotte Berghman, Dries Goossens, and Roel Leus.
+\newblock Efficient solutions for mastermind using genetic algorithms.
+\newblock {\em Computers \& operations research}, 36(6):1880--1885, 2009.
 
 \bibitem{bernier1996solving}
 Jos{\'e}~Luis Bernier, C~Ilia Herr{\'a}iz, JJ~Merelo, S~Olmeda, and Alberto

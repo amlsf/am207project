@@ -3,46 +3,44 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: am207-report.aux
 The style file: plain.bst
 Database file #1: project.bib
-Warning--I didn't find a database entry for "snydermastermind"
-You've used 9 entries,
+You've used 10 entries,
             2118 wiz_defined-function locations,
-            554 strings with 5662 characters,
-and the built_in function-call counts, 3601 in all, are:
-= -- 378
-> -- 128
+            562 strings with 5833 characters,
+and the built_in function-call counts, 3985 in all, are:
+= -- 417
+> -- 146
 < -- 5
-+ -- 52
-- -- 42
-* -- 219
-:= -- 550
-add.period$ -- 32
-call.type$ -- 9
-change.case$ -- 48
++ -- 59
+- -- 48
+* -- 252
+:= -- 615
+add.period$ -- 35
+call.type$ -- 10
+change.case$ -- 54
 chr.to.int$ -- 0
-cite$ -- 9
-duplicate$ -- 164
-empty$ -- 305
-format.name$ -- 42
-if$ -- 806
+cite$ -- 10
+duplicate$ -- 175
+empty$ -- 334
+format.name$ -- 48
+if$ -- 883
 int.to.chr$ -- 0
-int.to.str$ -- 9
-missing$ -- 9
-newline$ -- 48
-num.names$ -- 18
-pop$ -- 63
+int.to.str$ -- 10
+missing$ -- 10
+newline$ -- 53
+num.names$ -- 20
+pop$ -- 67
 preamble$ -- 1
-purify$ -- 39
+purify$ -- 44
 quote$ -- 0
-skip$ -- 120
+skip$ -- 126
 stack$ -- 0
-substring$ -- 256
-swap$ -- 57
+substring$ -- 292
+swap$ -- 58
 text.length$ -- 5
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 36
+type$ -- 40
 warning$ -- 0
-while$ -- 37
-width$ -- 10
-write$ -- 104
-(There was 1 warning)
+while$ -- 41
+width$ -- 12
+write$ -- 115

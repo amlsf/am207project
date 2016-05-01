@@ -12,7 +12,7 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Maximizing Shannon Entropy}{3}}
 \citation{bernier1996solving}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Simulated Annealing}{4}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.5}Genetic Algorithms}{4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5}Genetic Algorithms}{5}}
 \@writefile{toc}{\contentsline {section}{\numberline {3}Experiments}{5}}
 \@writefile{toc}{\contentsline {section}{\numberline {4}Conclusion}{5}}
 \@writefile{toc}{\contentsline {section}{\numberline {A}Figures}{6}}
@@ -53,37 +53,84 @@
 \newlabel{fig:gaentropy}{{11}{10}}
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Number of guesses}}}{10}}
 \@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Runtime (seconds)}}}{10}}
-\@writefile{toc}{\contentsline {section}{\numberline {C}Results by Game Configuration}{11}}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces 4 positions; 4 possible digits\relax }}{11}}
-\newlabel{fig:compare_4_4}{{1}{11}}
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces 4 positions; 5 possible digits\relax }}{11}}
-\newlabel{fig:compare_4_5}{{2}{11}}
-\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces 4 positions; 6 possible digits\relax }}{12}}
-\newlabel{fig:compare_4_6}{{3}{12}}
-\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces 4 positions; 7 possible digits\relax }}{12}}
-\newlabel{fig:compare_4_7}{{4}{12}}
-\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces 4 positions; 8 possible digits\relax }}{13}}
-\newlabel{fig:compare_4_8}{{5}{13}}
-\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces 4 positions; 9 possible digits\relax }}{13}}
-\newlabel{fig:compare_4_9}{{6}{13}}
-\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces 4 positions; 10 possible digits\relax }}{14}}
-\newlabel{fig:compare_4_10}{{7}{14}}
-\@writefile{toc}{\contentsline {section}{\numberline {D}Additional Methods Tested}{15}}
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces Knuth's algorithm2\relax }}{11}}
+\newlabel{fig:knuth}{{12}{11}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Number of guesses}}}{11}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Runtime (seconds)}}}{11}}
+\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces Random search / Random sampling from posterior\relax }}{11}}
+\newlabel{fig:randomsearch2}{{13}{11}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Number of guesses}}}{11}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Runtime (seconds)}}}{11}}
+\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces Maximizing entropy (all steps)\relax }}{12}}
+\newlabel{fig:entropyall2}{{14}{12}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Number of guesses}}}{12}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Runtime (seconds)}}}{12}}
+\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces Maximizing entropy (except first step)\relax }}{12}}
+\newlabel{fig:entropyminusone2}{{15}{12}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Number of guesses}}}{12}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Runtime (seconds)}}}{12}}
+\@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces Simulated annealing (Bernier objective function)\relax }}{13}}
+\newlabel{fig:sabernier2}{{16}{13}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Number of guesses}}}{13}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Runtime (seconds)}}}{13}}
+\@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces Simulated annealing (entropy objective function)\relax }}{13}}
+\newlabel{fig:saentropy2}{{17}{13}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Number of guesses}}}{13}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Runtime (seconds)}}}{13}}
+\@writefile{lof}{\contentsline {figure}{\numberline {18}{\ignorespaces Genetic algorithms (Bernier objective function)\relax }}{14}}
+\newlabel{fig:gabernier2}{{18}{14}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Number of guesses}}}{14}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Runtime (seconds)}}}{14}}
+\@writefile{lof}{\contentsline {figure}{\numberline {19}{\ignorespaces Genetic algorithms (entropy objective function)\relax }}{14}}
+\newlabel{fig:gaentropy2}{{19}{14}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Number of guesses}}}{14}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Runtime (seconds)}}}{14}}
+\@writefile{toc}{\contentsline {section}{\numberline {C}Results by Game Configuration}{15}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces 4 positions; 4 possible colors\relax }}{15}}
+\newlabel{fig:compare_4_4}{{1}{15}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces 4 positions; 5 possible colors\relax }}{15}}
+\newlabel{fig:compare_4_5}{{2}{15}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces 4 positions; 6 possible colors\relax }}{16}}
+\newlabel{fig:compare_4_6}{{3}{16}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces 4 positions; 7 possible colors\relax }}{16}}
+\newlabel{fig:compare_4_7}{{4}{16}}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces 4 positions; 8 possible colors\relax }}{17}}
+\newlabel{fig:compare_4_8}{{5}{17}}
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces 4 positions; 9 possible colors\relax }}{17}}
+\newlabel{fig:compare_4_9}{{6}{17}}
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces 4 positions; 10 possible colors\relax }}{18}}
+\newlabel{fig:compare_4_10}{{7}{18}}
+\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces 2 possible colors; 4 positions\relax }}{19}}
+\newlabel{fig:compare_2_4}{{8}{19}}
+\@writefile{lot}{\contentsline {table}{\numberline {9}{\ignorespaces 2 possible colors; 5 positions\relax }}{19}}
+\newlabel{fig:compare_2_5}{{9}{19}}
+\@writefile{lot}{\contentsline {table}{\numberline {10}{\ignorespaces 2 possible colors; 6 positions\relax }}{20}}
+\newlabel{fig:compare_2_6}{{10}{20}}
+\@writefile{lot}{\contentsline {table}{\numberline {11}{\ignorespaces 2 possible colors; 7 positions\relax }}{20}}
+\newlabel{fig:compare_2_7}{{11}{20}}
+\@writefile{lot}{\contentsline {table}{\numberline {12}{\ignorespaces 2 possible colors; 8 positions\relax }}{21}}
+\newlabel{fig:compare_2_8}{{12}{21}}
+\@writefile{lot}{\contentsline {table}{\numberline {13}{\ignorespaces 2 possible colors; 9 positions\relax }}{21}}
+\newlabel{fig:compare_2_9}{{13}{21}}
+\@writefile{lot}{\contentsline {table}{\numberline {14}{\ignorespaces 2 possible colors; 10 positions\relax }}{22}}
+\newlabel{fig:compare_2_10}{{14}{22}}
+\@writefile{toc}{\contentsline {section}{\numberline {D}Additional Methods Tested}{23}}
 \citation{runarsson2010adapting}
 \citation{merelo2010finding}
 \citation{doerr2013playing}
 \citation{merelo2013improving}
-\citation{snydermastermind}
 \citation{neuwirth1982some}
 \citation{kooi2005yet}
+\citation{berghman2009efficient}
 \bibstyle{plain}
 \bibdata{project}
-\bibcite{bernier1996solving}{1}
-\bibcite{doerr2013playing}{2}
-\bibcite{knuth76}{3}
-\bibcite{kooi2005yet}{4}
-\bibcite{merelo2010finding}{5}
-\bibcite{merelo2013improving}{6}
-\bibcite{neuwirth1982some}{7}
-\bibcite{runarsson2010adapting}{8}
-\bibcite{vomlel2004bayesian}{9}
+\bibcite{berghman2009efficient}{1}
+\bibcite{bernier1996solving}{2}
+\bibcite{doerr2013playing}{3}
+\bibcite{knuth76}{4}
+\bibcite{kooi2005yet}{5}
+\bibcite{merelo2010finding}{6}
+\bibcite{merelo2013improving}{7}
+\bibcite{neuwirth1982some}{8}
+\bibcite{runarsson2010adapting}{9}
+\bibcite{vomlel2004bayesian}{10}
