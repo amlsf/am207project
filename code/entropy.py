@@ -11,6 +11,9 @@
 ######################
 
 # runs entropy solvers for MasterMind
+# Mathematical reference: http://link.springer.com/article/10.1007%2FBF01917147
+# Implementation reference: http://www.geometer.org/mathcircles/mastermind.pdf
+
 
 '''
 Example:
@@ -52,9 +55,6 @@ import matplotlib.pyplot as plt
 def entropy_all(cl=4, nc=6, code=None, silent=False):
     '''
     Selects the move with the highest Shannon entropy at each step.
-
-    Mathematical reference: http://link.springer.com/article/10.1007%2FBF01917147
-    Implementation reference: http://www.geometer.org/mathcircles
     '''
 
     # initialize game board
@@ -174,9 +174,6 @@ def entropy_minusone(cl=4, nc=6, code=None, silent=False):
     Selects the move with the highest Shannon entropy at each step, except for the first step,
     where a random code is selected instead. The entropy of most guesses is very similar at the
     first step, so we trade off very little or no performance for significant improvements in runtime.
-
-    Mathematical reference: http://link.springer.com/article/10.1007%2FBF01917147
-    Implementation reference: http://www.geometer.org/mathcircles
     '''
 
     # initialize game board
