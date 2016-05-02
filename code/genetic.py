@@ -82,7 +82,6 @@ class GAsim():
         self.max_pop = 60
         self.max_gen = 100
 
-        self.crossover_points = 2
         self.crossover_prob = 0.5
         self.crossover_mutation_prob = 0.03
         self.permutation_prob = 0.03
@@ -130,8 +129,6 @@ class GAsim():
 
         elite = []
         h = 1
-        # TODO
-        # len(elite) <= pop_size and h <= gen_size
         while not elite:
 
             children = []
@@ -172,9 +169,6 @@ class GAsim():
                 if code in elite:
                     elite.remove(code)
 
-                    # replace the removed duplicate elite code with a random one
-                    elite.append(list(np.random.choice(self.game._C, self.game._L, replace=True)))
-
             # add eligible to elite
             for eligible in eligibles:
                 if len(elite) == pop_size:
@@ -200,8 +194,7 @@ class GAsim():
 
     def crossover(self, code1, code2):
         """
-        Up to number of crossovers equal to self.crossover_points, each with probability of self.crossover_prob,
-        crosses code1 with code2
+        Each point of code1 has a probability of self.crossover_prob of being crossed with code2
         """
         result = copy.copy(code1)
 
@@ -295,6 +288,8 @@ class GAsim():
 
         return self.game.n_guessed
 
+
 if __name__ == "__main__":
     s = GAsim()
-    s.runGA() # same as runGA(cl=4, nc=6, silent=False)
+    s.runGA()
+    # same as runGA(cl=4, nc=6, silent=False)
