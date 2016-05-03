@@ -18,44 +18,25 @@ Example:
 
 >>> python genetic.py
 
-Code successfully initialized to  [1 5 2 2]
+Code successfully initialized to  [5 0 1 3]
 
-guess #1 of 10: you guessed  [1, 3, 1, 4]
+guess #1 of 10: you guessed  [1, 1, 2, 3]
 You have 1 right item(s) in the right place, and
-  0 right item(s) but in the wrong place
+  1 right item(s) but in the wrong place
 
-accepted better or equal, temperature: 6
-guess #2 of 10: you guessed  [4, 4, 3, 0]
+guess #2 of 10: you guessed  [0, 3, 2, 2]
 You have 0 right item(s) in the right place, and
-  0 right item(s) but in the wrong place
+  2 right item(s) but in the wrong place
 
-accepted worse (random), temperature: 5.7624
-guess #3 of 10: you guessed  [5, 2, 4, 1]
+guess #3 of 10: you guessed  [1, 4, 3, 0]
 You have 0 right item(s) in the right place, and
   3 right item(s) but in the wrong place
 
-accepted better or equal, temperature: 5.20875319948
-guess #4 of 10: you guessed  [2, 4, 2, 5]
-You have 1 right item(s) in the right place, and
-  2 right item(s) but in the wrong place
-
-accepted worse (random), temperature: 4.08739574544
-guess #5 of 10: you guessed  [4, 2, 5, 5]
+guess #4 of 10: you guessed  [3, 1, 0, 5]
 You have 0 right item(s) in the right place, and
-  2 right item(s) but in the wrong place
+  4 right item(s) but in the wrong place
 
-accepted better or equal, temperature: 2.89663070294
-guess #6 of 10: you guessed  [2, 1, 5, 2]
-You have 1 right item(s) in the right place, and
-  3 right item(s) but in the wrong place
-
-accepted worse (random), temperature: 2.7819241271
-guess #7 of 10: you guessed  [5, 1, 2, 2]
-You have 2 right item(s) in the right place, and
-  2 right item(s) but in the wrong place
-
-accepted better or equal, temperature: 2.56595823837
-guess #8 of 10: you guessed  [1, 5, 2, 2]
+guess #5 of 10: you guessed  [5, 0, 1, 3]
 You have 4 right item(s) in the right place
 You win!
 '''

@@ -20,21 +20,21 @@ Example:
 
 >>> python randomsearch.py
 
-Code successfully initialized to  [0 4 3 5]
+Code successfully initialized to  [2 2 1 2]
 
-guess #1 of 10: you guessed  [2, 3, 2, 4]
+guess #1 of 10: you guessed  [1, 3, 3, 5]
 You have 0 right item(s) in the right place, and
-  2 right item(s) but in the wrong place
+  1 right item(s) but in the wrong place
 
-guess #2 of 10: you guessed  [5, 0, 4, 2]
+guess #2 of 10: you guessed  [4, 0, 0, 1]
 You have 0 right item(s) in the right place, and
-  3 right item(s) but in the wrong place
+  1 right item(s) but in the wrong place
 
-guess #3 of 10: you guessed  [4, 2, 1, 0]
+guess #3 of 10: you guessed  [5, 4, 2, 4]
 You have 0 right item(s) in the right place, and
-  2 right item(s) but in the wrong place
+  1 right item(s) but in the wrong place
 
-guess #4 of 10: you guessed  [0, 4, 3, 5]
+guess #4 of 10: you guessed  [2, 2, 1, 2]
 You have 4 right item(s) in the right place
 You win!
 '''

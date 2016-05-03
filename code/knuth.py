@@ -18,21 +18,21 @@ Example:
 
 >>> python knuth.py
 
-Code successfully initialized to  [2 3 4 0]
+Code successfully initialized to  [1 1 2 0]
 
 guess #1 of 10: you guessed  [0, 0, 1, 1]
 You have 0 right item(s) in the right place, and
-  1 right item(s) but in the wrong place
-
-guess #2 of 10: you guessed  [4, 4, 2, 0]
-You have 1 right item(s) in the right place, and
-  2 right item(s) but in the wrong place
-
-guess #3 of 10: you guessed  [4, 3, 0, 2]
-You have 1 right item(s) in the right place, and
   3 right item(s) but in the wrong place
 
-guess #4 of 10: you guessed  [2, 3, 4, 0]
+guess #2 of 10: you guessed  [5, 1, 3, 0]
+You have 2 right item(s) in the right place, and
+  0 right item(s) but in the wrong place
+
+guess #3 of 10: you guessed  [2, 1, 0, 0]
+You have 2 right item(s) in the right place, and
+  1 right item(s) but in the wrong place
+
+guess #4 of 10: you guessed  [1, 1, 2, 0]
 You have 4 right item(s) in the right place
 You win!
 '''

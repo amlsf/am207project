@@ -3,3 +3,10 @@
 
 # DS_store
 .DS_store
+
+# submission folder
+submission/
+
+# screencast
+*.mov
+

@@ -12,6 +12,30 @@
 
 # runs maximum likelihood estimator for Mastermind. Amounts to constrained random search
 
+'''
+Example:
+
+>>> python mle.py
+
+Code successfully initialized to  [1 4 4 4]
+
+guess #1 of 10: you guessed  [4 4 0 0]
+You have 1 right item(s) in the right place, and
+  1 right item(s) but in the wrong place
+
+guess #2 of 10: you guessed  [4 0 2 5]
+You have 0 right item(s) in the right place, and
+  1 right item(s) but in the wrong place
+
+guess #3 of 10: you guessed  [0 3 0 3]
+You have 0 right item(s) in the right place, and
+  0 right item(s) but in the wrong place
+
+guess #4 of 10: you guessed  [1 4 4 4]
+You have 4 right item(s) in the right place
+You win!
+'''
+
 from MMboard import MMboard 
 import numpy as np
 import itertools

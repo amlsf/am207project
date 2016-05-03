@@ -1,0 +1,18 @@
+The object of Mastermind is to identify colors that make up a 4-element secret code, each color being chosen from a set of 6.  In response to each of 10 allowed guesses, a “hint” is provided indicating how many colors are in the correct position, and how many are correct but in the wrong position. 
+
+A number of popular computational strategies exist to solve Mastermind. Many simply track unguessed codes that satisfy all previous hints, and reduce this set of codes iteratively.  While these algorithms may be well-suited to the standard Mastermind setup, we questioned whether they would scale well as the dimensions of the game increased.  (30 sec.)
+
+One alternative algorithm we investigated is simulated annealing. As applied to Mastermind, changes to the state space are effected via two methods: in a permutation the colors in two different randomly selected positions are switched, whereas in a mutation the color in a randomly chosen position is replaced.
+
+When the temperature is high, numerous permutations and mutations are applied to a previous guess, often resulting in a very different proposed guess.  A cost function is evaluated; and the more likely the proposal improves on the previous ones, the more likely the proposal will be accepted.
+
+As the temperature decreases, and new guesses get closer to an optimal solution, fewer permutations and mutations are permitted, until eventually, the temperature is so low that only small changes are made to the previous guess. If all goes well, the correct code is identified. (45 sec.)
+
+We also looked into genetic algorithms.  As applied to Mastermind, changes to previous guesses are effected not only through permutations and mutations, but also through crossovers in which the same positions in two different codes are randomly swapped, and through inversions, in which the sequence of colors between randomly chosen positions are reversed.
+
+In our experiments, we repeatedly created populations of potential guesses, and evolved them toward better solutions over the course of “generations”. The most eligible guesses survived each generation, as determined by a “fitness” function -- 
+a measure of how close a guess is likely to improve on previous ones. (35 sec.)
+
+We found that while exhaustive search algorithms took about the same number of guesses to identify the correct code as the number of positions and colors increased, the time to arrive at the solution quickly became untenable.  
+
+On the other hand, our stochastic strategies required less time to arrive at reasonable guesses, allowing close-to-optimal solutions to be found in a fixed period. Therefore, in high-dimensional, time-limited situations where finding a “good” guess is acceptable, these approaches become increasingly valuable. (25 sec.)
